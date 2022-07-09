@@ -9,6 +9,15 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup}
+
+
+```{r setup, eval = FALSE}
 library(ftr)
+con <- ft_connect(username = "your_username", password = "your_password")
+
 ```
+
+
+
+```
+

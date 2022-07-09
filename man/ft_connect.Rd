@@ -4,17 +4,19 @@
 \alias{ft_connect}
 \title{Connect to Fisheries Technology Database}
 \usage{
-ft_connect(username, password)
+ft_connect(username, password, use_odbc = TRUE)
 }
 \arguments{
 \item{username}{your username}
 
 \item{password}{your password}
+
+\item{use_odbc}{A boolean (default TRUE) controlling if connection via odbc or ROracle.
+The latter is generally faster but more difficult to setup.}
 }
 \value{
 a database connection
 }
 \description{
-This function is the mother of all mothers that all other ft_ functions
-rely on. If not you are doomed.
+This function is the mother of all mothers that all other ft_ functions rely on. If not you are doomed.
 }
