@@ -11,7 +11,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-# ftr
+# ftmr
 
 <!-- badges: start -->
 <!-- badges: end -->
@@ -23,3 +23,9 @@ The goal of {ftr} is to:
 * Provide Rmarkdown report templates for various standardized reports
 * R-code examples for data analysis and graphical presentations
 
+# Connection
+
+* [https://docs.microsoft.com/en-us/sql/odbc/admin/odbc-data-source-administrator?view=sql-server-ver15](https://docs.microsoft.com/en-us/sql/odbc/admin/odbc-data-source-administrator?view=sql-server-ver15)
+* [dplyr and Oracle database with odbc on windows](https://guillaumepressiat.github.io/blog/2019/11/oraclyr)
+* [RStudio instruction on connecting to Oracle](https://db.rstudio.com/databases/oracle/)
+* [Using RStudio Connections in the RStudio IDE](https://support.rstudio.com/hc/en-us/articles/115010915687)

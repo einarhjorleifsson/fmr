@@ -1,5 +1,5 @@
-Package: ftr
-Title: Establish R-connection to Fisheries Technology (FT) Oracle database and then some
+Package: ftmr
+Title: Establish R-connection to Fisheries Technology Manager (FTM) Oracle database and then some
 Version: 0.0.0.9000
 Authors@R: 
     person("Einar", "Hjorleifsson", , "einar.hjorleifsson@gmail.com", role = c("aut", "cre"),
