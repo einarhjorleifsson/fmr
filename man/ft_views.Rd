@@ -6,6 +6,9 @@
 \usage{
 ft_views(con)
 }
+\arguments{
+\item{con}{A oracle connection}
+}
 \description{
 Get overview of all views in FTM
 }

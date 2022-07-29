@@ -14,4 +14,7 @@ Suggests:
     ROracle
 Imports: 
     DBI,
-    odbc
+    dbplyr,
+    dplyr,
+    odbc,
+    purrr

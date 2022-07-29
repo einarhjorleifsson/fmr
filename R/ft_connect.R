@@ -31,19 +31,26 @@ ft_connect <- function(username, password, DBQ, use_odbc = TRUE) {
 }
 
 
+#' @title Access a table
+#'
+#' @param con A oracle connection
+#' @param tbl A string containing schema and table, separated by a dot
+#'
 #' @export
 ft_tbl <- function (con, tbl) {
   if (packageVersion("dbplyr") == "1.4.4") {
-    x <- strsplit(tbl, "\\.") %>% unlist()
+    x <- strsplit(tbl, "\\.") |> unlist()
   }
   else {
-    x <- strsplit(tbl, "\\.") %>% unlist() %>% purrr::map_if(!grepl("\"",
-                                                                    .), toupper) %>% gsub("\"", "", .)
+    x <- strsplit(tbl, "\\.") |> unlist() |> purrr::map_if(!grepl("\"",
+                                                                    .), toupper) |> gsub("\"", "", .)
   }
-  dplyr::tbl(con, dbplyr::in_schema(x[1], x[2])) %>% dplyr::select_all(tolower)
+  dplyr::tbl(con, dbplyr::in_schema(x[1], x[2])) |> dplyr::select_all(tolower)
 }
 
 #' @title Get overview of all tables in FTM
+#'
+#' @param con A oracle connection
 #'
 #' @export
 ft_tables <- function(con) {
@@ -52,6 +59,8 @@ ft_tables <- function(con) {
 
 #' @title Get overview of all views in FTM
 #'
+#' @param con A oracle connection
+#'
 #' @export
 ft_views <- function(con) {
   ft_tbl(con, "sys.all_views")
@@ -59,7 +68,7 @@ ft_views <- function(con) {
 
 #' @title Vessel table
 #'
-#' @oaram con A oracle connection
+#' @param con A oracle connection
 #'
 #' @export
 ft_vessels <- function(con) {
@@ -68,13 +77,20 @@ ft_vessels <- function(con) {
 }
 
 
-
+#' @title FAO ASFIS table
+#'
+#' @param con A oracle connection
+#'
 #' @export
 ft_asfis <- function(con) {
   ft_tbl(con, "datistica1.z_asfis") |>
     dplyr::select(-c(stats_data, image_name, image_content_type, image))
 }
 
+#' @title Local species table
+#'
+#' @param con A oracle connection
+#'
 #' @export
 ft_species <- function(con) {
   ft_tbl(con, "datistica1.species") |>

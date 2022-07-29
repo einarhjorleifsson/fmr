@@ -6,6 +6,9 @@
 \usage{
 ft_vessels(con)
 }
+\arguments{
+\item{con}{A oracle connection}
+}
 \description{
 Vessel table
 }
