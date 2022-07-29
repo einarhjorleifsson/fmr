@@ -39,11 +39,16 @@ ft_connect <- function(username, password, DBQ, use_odbc = TRUE) {
 #' @export
 ft_tbl <- function (con, tbl) {
   if (packageVersion("dbplyr") == "1.4.4") {
-    x <- strsplit(tbl, "\\.") |> unlist()
+    x <-
+      strsplit(tbl, "\\.") %>%
+      unlist()
   }
   else {
-    x <- strsplit(tbl, "\\.") |> unlist() |> purrr::map_if(!grepl("\"",
-                                                                    .), toupper) |> gsub("\"", "", .)
+    x <-
+      strsplit(tbl, "\\.") %>%
+      unlist() %>%
+      purrr::map_if(!grepl("\"", .), toupper) %>%
+      gsub("\"", "", .)
   }
   dplyr::tbl(con, dbplyr::in_schema(x[1], x[2])) |> dplyr::select_all(tolower)
 }

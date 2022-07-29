@@ -49,7 +49,7 @@ q |> show_query()
 #### Let's take a peek
 
 ```{r}
-q |> glimpse()
+q |> collect() |> glimpse()
 ```
 
 #### Get all vessel data into R
@@ -89,6 +89,6 @@ show_query(q)
 #### Results
 
 ```{r}
-q
+q |> collect()
 ```
 
