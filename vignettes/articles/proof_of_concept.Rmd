@@ -1,0 +1,94 @@
+---
+title: "Proof of concept"
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  message = FALSE,
+  warning = FALSE,
+  comment = "#>"
+)
+```
+
+```{r, echo = FALSE}
+tmp <- readr::read_rds("~/r/Pakkar2/ftmr/tmp.rds")
+username <- tmp[[1]]
+password <- tmp[[2]]
+DBQ <- tmp[[3]]
+```
+
+
+## Load needed libraries
+
+```{r}
+library(tidyverse)
+library(ftmr)
+```
+
+## Establish a connection
+
+```{r}
+con <- ft_connect(username, password, DBQ)
+```
+
+## Make query on the vessel data
+
+```{r}
+q <- 
+  ft_vessels(con) |> 
+  select(vid = vessel_id, vessel = vessel_name, loa)
+```
+
+#### What have we done?
+
+```{r}
+q |> show_query()
+```
+
+#### Let's take a peek
+
+```{r}
+q |> glimpse()
+```
+
+#### Get all vessel data into R
+
+```{r}
+vessels <- 
+  q |> 
+  collect(n = Inf)
+```
+
+... do some analysis:
+
+```{r}
+vessels |> 
+  ggplot(aes(loa)) +
+  geom_histogram(binwidth = 100) +
+  labs(title = "Distribution of vessel lengths")
+```
+
+## Make a little more complex query on species data
+
+```{r}
+q <- 
+  ft_species(con) |> 
+  filter(friendly_name %in% c("Þorskur", "Lúða", "Ýsa")) |> 
+  left_join(ft_asfis(con) |> 
+              select(asfis_id, family)) |> 
+  count(family)
+```
+
+#### What have we done?
+
+```{r}
+show_query(q)
+```
+
+#### Results
+
+```{r}
+q
+```
+

@@ -1,0 +1,28 @@
+---
+title: "Access issues"
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  message = FALSE,
+  warning = FALSE,
+  comment = "#>"
+)
+```
+
+To establish a connection in R one needs to do this:
+
+```{r, eval = FALSE}
+DBI::dbConnect(odbc::odbc(),
+               Driver = "Oracle",
+               Port = 1521,
+               UID = username,
+               PWD = password,
+               DBQ = DBQ,
+               timeout = 20)
+```
+
+Now, the username and password should of course never be revealed.
+
+But question is if ok to provide a text path for the FTM DBQ inside af function that will reside on github.com?

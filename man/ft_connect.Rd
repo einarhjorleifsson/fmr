@@ -2,14 +2,16 @@
 % Please edit documentation in R/ft_connect.R
 \name{ft_connect}
 \alias{ft_connect}
-\title{Connect to Fisheries Technology Database}
+\title{Connect to Fisheries Technology Mangager Oracle Database}
 \usage{
-ft_connect(username, password, use_odbc = TRUE)
+ft_connect(username, password, DBQ, use_odbc = TRUE)
 }
 \arguments{
 \item{username}{your username}
 
 \item{password}{your password}
+
+\item{DBQ}{your path to the database}
 
 \item{use_odbc}{A boolean (default TRUE) controlling if connection via odbc or ROracle.
 The latter is generally faster but more difficult to setup.}
