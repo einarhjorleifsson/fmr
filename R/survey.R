@@ -1,3 +1,4 @@
+#
 #' @export
 ft_landings <- function(con) {
   ft_tbl(con, "datistica1.landings_view")
