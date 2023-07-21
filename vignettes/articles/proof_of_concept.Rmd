@@ -16,6 +16,7 @@ tmp <- readr::read_rds("~/r/Pakkar2/ftmr/tmp.rds")
 username <- tmp[[1]]
 password <- tmp[[2]]
 DBQ <- tmp[[3]]
+
 ```
 
 
