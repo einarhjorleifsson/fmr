@@ -1,5 +1,5 @@
-Package: ftmr
-Title: Establish R-connection to Fisheries Technology Manager (FTM) Oracle database and then some
+Package: fmr
+Title: Establish R-connection to Fisheries Manager (FM)
 Version: 0.0.0.9000
 Authors@R: 
     person("Einar", "Hjorleifsson", , "einar.hjorleifsson@gmail.com", role = c("aut", "cre"),
@@ -8,13 +8,14 @@ Description: Establish R-connection to Fisheries Technology (FT) Oracle database
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.0
+RoxygenNote: 7.3.1
 Suggests: 
     rmarkdown (>= 2.14),
     ROracle
 Imports: 
-    DBI,
-    dbplyr,
     dplyr,
-    odbc,
-    purrr
+    janitor,
+    jsonlite,
+    lubridate,
+    stringr,
+    tibble

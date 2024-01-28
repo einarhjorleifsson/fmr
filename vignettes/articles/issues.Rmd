@@ -1,0 +1,76 @@
+---
+title: "Q&A / issues"
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  message = FALSE,
+  warning = FALSE,
+  comment = "#>"
+)
+```
+
+
+## Load needed libraries
+
+```{r}
+library(tidyverse)
+library(fmr)
+```
+
+## Missing landings (survey) dates
+
+```{r}
+ln <- 
+  fmr::fm_landings()
+```
+
+Do not expect that landing date is missing:
+
+```{r}
+ln |> 
+  mutate(date_missing = is.na(landing_date)) |> 
+  count(date_missing)
+```
+
+Peek at records:
+
+```{r}
+ln |> 
+  filter(is.na(landing_date)) |> 
+  glimpse()
+```
+
+The survey_id's with missing landing_date:
+
+```{r}
+ln |> 
+  filter(is.na(landing_date)) |> 
+  pull(survey_id) |> 
+  unique() |> 
+  sort()
+```
+
+However, we have time that the landings records were created:
+
+```{r}
+ln |> 
+  filter(is.na(landing_date)) |> 
+  select(survey_id, landing_date, created_by, created_date_time_str) |> 
+  distinct() |> 
+  arrange(survey_id) |> 
+  knitr::kable()
+```
+
+Just a check on what is in the surveyD table (same thing):
+```{r}
+s <- fmr::fm_survey_date()
+s |> 
+  filter(is.na(date))
+s |> 
+  filter(is.na(date)) |> 
+  pull(survey_id) |> 
+  sort()
+```
+
