@@ -17,5 +17,6 @@ Imports:
     janitor,
     jsonlite,
     lubridate,
+    stats,
     stringr,
     tibble
