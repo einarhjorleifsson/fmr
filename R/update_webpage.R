@@ -1,5 +1,7 @@
 update_webpage <- function() {
-  system("rm -rf /net/hafri.hafro.is/export/home/hafri/einarhj/public_html/pkg/fmr")
+  #system("mkdir /net/hafri.hafro.is/export/home/hafri/einarhj/public_html/pkg/fmr")
+  system("rm -rf /net/hafri.hafro.is/export/home/hafri/einarhj/public_html/pkg/fmr/*")
+  
   system("cp -rp docs/* /net/hafri.hafro.is/export/home/hafri/einarhj/public_html/pkg/fmr")
   system("chmod -R a+rX /net/hafri.hafro.is/export/home/hafri/einarhj/public_html/pkg/fmr")
 }

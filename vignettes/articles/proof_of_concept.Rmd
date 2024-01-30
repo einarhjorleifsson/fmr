@@ -20,7 +20,7 @@ library(fmr)
 ```
 
 ```{r}
-fmr::fm_landings() |> 
+fm_landingV() |> 
   glimpse()
 ```
 

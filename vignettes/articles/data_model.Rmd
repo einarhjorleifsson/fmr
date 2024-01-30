@@ -1,0 +1,136 @@
+---
+title: "The data model"
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  message = FALSE,
+  warning = FALSE,
+  comment = "#>"
+)
+```
+
+```{r}
+library(fmr)
+library(tidyverse)
+```
+
+## Preamble
+
+This document is just to explore the FM data model, done to prevent any misunderstanding when setting up the downstream code.
+
+The current available API on landings (landingF) provides a wide-table that is made up from three tables ([The Data Structured Explained](https://fimsehf.atlassian.net/wiki/x/zgC7ww)).
+
+1. Survey table - distinguished by survey_id
+2. Survey detail table - distinguished by survey_item_id
+3. Survey item table - distinguished by survey_item_dtl_id
+
+The conceptual design is depicted as:
+
+```{r, echo = FALSE}
+#| fig.cap: "Source: Fisheries Technologies."
+knitr::include_graphics(here::here("vignettes/articles/data_model1.png"))
+```
+
+The FM 3 table framework is not specific for sampling from landings, but lets here think about these tree tables in that context.
+
+1. Sampling site table (survey table): For catch-sampling from landings data one could imagine that each row represents information about the sampling from a particular sampling site on a particular sampling date (this though not the necissary case as discussed below).
+2. Trip table (survey detail table): In case of catch sampling from landings this table should contain all information related to a single fishing trip except details of catch.
+3. Catch table (survey item table): In case of catch sampling from landings this table will contain the detail information about catch by species.
+
+Combining these three data tables into a single wide-table is very common delivery approach when the downstream analysis is based on somekind of a spreadsheet software. The problem here though is that each measuremnts in the trip table gets repeated by the number of species reorded in the catch table and then the records associated with the sampling site get repeated by the number of trips. E.g. if on one sampling site within one day one samples 10 trips and for each of those 10 trips we measure 10 species we have 10x10 repeated records of the variables associated with the sampling site table.
+
+Wide-tables where one has repeated records of the same measure create a bit of problem when in downstream analysis of statistics associated with any of the upstream tables is needed, in particular when there are a lot of variables (column) in the wide-table. And in order that any code generated is delivering what is intended the person using the wide-table has to have a full knowledge of the data-model in the first place.
+
+## The landing site-date table (Survey table)
+
+Information about each (landing) survey can be retrived with the {fmr::fm_survey}-function. 
+The main sampling table can retrived by:
+
+```{r}
+s <- fm_survey()
+s |> glimpse()
+```
+
+Each survey is indentified by a unique value stored as *survey_id*. Intuatively one expect that each survey_id constitute a unique number for each landing site (*site*) by each sampling day (*date*). This is however not necessarily the case as demonstrated here:
+
+```{r}
+s |> 
+  group_by(site, date) |> 
+  summarise(n_surveyid = n_distinct(survey_id),
+            .groups = "drop")
+```
+
+One could implement a unique id was implemented within the R-function, named e.g. *.sid*. We can test that via:
+
+```{r}
+s <- 
+  s |> 
+  # just so we can get the original order back
+  mutate(.rowid = 1:n()) |> 
+  arrange(site, date, time) |> 
+  mutate(.sid = dplyr::consecutive_id(site, date)) |> 
+  arrange(.rowid) |> 
+  select(-.rowid)
+s |> 
+  summarise(n_sid = n_distinct(.sid),
+            n_surveyid = n_distinct(survey_id),
+            .groups = "drop")
+```
+
+One would use this table e.g. to get an overview of when sampling sites were visited:
+
+
+```{r}
+be <- 
+  s |> 
+  filter(site == "Basseterre East",
+         year(date) == 2023) |> 
+  select(site, date, .sid) |> 
+  distinct() |> 
+  arrange(date)
+sd <- be$date |> lubridate::yday()
+```
+
+```{r, fig.height = 7, fig.width=9}
+library(calendR)
+calendR(2023,
+        monthnames = month.name,
+        weeknames = c("M", "T", "W", "T", "F", "S", "S"),
+        special.days = sd,
+        special.col = "pink",
+        low.col = "grey90")
+```
+
+### Some issues
+
+Do not expect that one can create a survey without a survey date:
+
+```{r}
+f <- fm_landingF()
+f |> 
+  filter(is.na(landing_date)) |> 
+  select(date = landing_date, 
+         survey_id, 
+         status = survey_status_id, 
+         cn = created_by,
+         ct = created_date) |> 
+  distinct() |> 
+  knitr::kable(caption = "Records of missing survey_date")
+```
+
+## The trip table (Survey detail table)
+
+```{r}
+trips <- fm_survey_item()
+trips |> glimpse()
+```
+
+## The catch table (Survey item table)
+
+```{r}
+catch <- fm_sidF()
+catch |> glimpse()
+```
+
