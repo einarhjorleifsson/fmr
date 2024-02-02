@@ -20,5 +20,6 @@ Imports:
     lubridate,
     stats,
     stringr,
-    tibble
+    tibble,
+    tidyr
 Config/testthat/edition: 3

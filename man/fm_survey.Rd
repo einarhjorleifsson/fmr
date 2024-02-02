@@ -3,6 +3,18 @@
 \name{fm_survey}
 \alias{fm_survey}
 \title{The survey main table}
+\format{
+A data frame with nine variables:
+\describe{
+\item{\code{site}}{Name of the (landing) site}
+\item{\code{island}}{Name of the island, returned in some cases}
+\item{\code{date}}{Date of the survey}
+\item{\code{time}}{Time of the survey}
+\item{\code{survey_id}}{Numerical code, used to join to other tables}
+}
+
+For further details, see \url{https://fimsehf.atlassian.net/wiki/spaces/FT/pages/3283812558/New+The+Data+Structure+Explained}
+}
 \usage{
 fm_survey(key, std = TRUE, trim = TRUE)
 }
