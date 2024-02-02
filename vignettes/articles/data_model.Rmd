@@ -20,13 +20,13 @@ library(tidyverse)
 
 This document is just to explore the FM data model, done to prevent any misunderstanding when setting up the downstream code.
 
-The current available API on landings (landingF) provides a wide-table that is made up from three tables ([The Data Structured Explained](https://fimsehf.atlassian.net/wiki/x/zgC7ww)).
+The current available API on landings (see fm_landingF and fm_landingV) provides a wide-table that is made up from three tables ([The Data Structured Explained](https://fimsehf.atlassian.net/wiki/x/zgC7ww)).
 
 1. Survey table - distinguished by survey_id
 2. Survey detail table - distinguished by survey_item_id
 3. Survey item table - distinguished by survey_item_dtl_id
 
-The conceptual design is depicted as:
+The conceptual design (if one is considering catch-sampling on landing sites) is depicted as:
 
 ```{r, echo = FALSE}
 #| fig.cap: "Source: Fisheries Technologies."
@@ -35,25 +35,30 @@ knitr::include_graphics(here::here("vignettes/articles/data_model1.png"))
 
 The FM 3 table framework is not specific for sampling from landings, but lets here think about these tree tables in that context.
 
-1. Sampling site table (survey table): For catch-sampling from landings data one could imagine that each row represents information about the sampling from a particular sampling site on a particular sampling date (this though not the necissary case as discussed below).
+1. Sampling site table (survey table): For catch-sampling from landings data one could imagine that each row represents information about the sampling from a particular sampling site on a particular sampling date (this though not the necessary case as discussed below).
 2. Trip table (survey detail table): In case of catch sampling from landings this table should contain all information related to a single fishing trip except details of catch.
-3. Catch table (survey item table): In case of catch sampling from landings this table will contain the detail information about catch by species.
+3. Catch table (survey item table): In case of catch sampling from landings this table will contain the detailed information about catch by species.
 
-Combining these three data tables into a single wide-table is very common delivery approach when the downstream analysis is based on somekind of a spreadsheet software. The problem here though is that each measuremnts in the trip table gets repeated by the number of species reorded in the catch table and then the records associated with the sampling site get repeated by the number of trips. E.g. if on one sampling site within one day one samples 10 trips and for each of those 10 trips we measure 10 species we have 10x10 repeated records of the variables associated with the sampling site table.
+Combining these three data tables into a single wide-table is very common delivery approach when the downstream analysis is based on some kind of a spreadsheet software. The problem here though is that each measurements in the trip table gets repeated by the number of species recorded in the catch table and then the records associated with the sampling site get repeated by the number of trips. E.g. if on one sampling site within one day one samples 10 trips and for each of those 10 trips we measure 5 species we have 50 (10 trips x 5 species) repeated records of the variables associated with the sampling site table.
 
-Wide-tables where one has repeated records of the same measure create a bit of problem when in downstream analysis of statistics associated with any of the upstream tables is needed, in particular when there are a lot of variables (column) in the wide-table. And in order that any code generated is delivering what is intended the person using the wide-table has to have a full knowledge of the data-model in the first place.
+Wide-tables where one has repeated records of the same measure create a bit of a problem in statistical analysis, in particular when there are a lot of variables (columns) in such a wide-table. In order that any code generated is delivering what is intended the person using the wide-table has to have a full knowledge of the data-model in the first place. Which defies hence the logic of providing a wide table.
 
-## The landing site-date table (Survey table)
+## The three survey tables
 
-Information about each (landing) survey can be retrived with the {fmr::fm_survey}-function. 
-The main sampling table can retrived by:
+As of this moment there are no API's to access all the variables within each of the three survey tables. Thus for now three functions are made available in the {fmr} that reverse engineer the flat-file API (landingF) into the separate components. The returned variables from these functions are of course limited to those provided in the wide API.
+
+
+### The landing site-date table (Survey table)
+
+Information about each (landing) survey can be retrieved with the {fmr::fm_survey}-function. 
+The data in main sampling table can obtained by:
 
 ```{r}
 s <- fm_survey()
 s |> glimpse()
 ```
 
-Each survey is indentified by a unique value stored as *survey_id*. Intuatively one expect that each survey_id constitute a unique number for each landing site (*site*) by each sampling day (*date*). This is however not necessarily the case as demonstrated here:
+Each survey is identified by a unique value stored as *survey_id*. Intuitively one expects that each survey_id constitutes a unique number for each landing site (*site*) by each sampling day (*date*). This is however not necessarily the case as demonstrated here:
 
 ```{r}
 s |> 
@@ -62,7 +67,7 @@ s |>
             .groups = "drop")
 ```
 
-One could implement a unique id was implemented within the R-function, named e.g. *.sid*. We can test that via:
+One could implement a unique id within the R-function, named e.g. *.sid*. We can test that via:
 
 ```{r}
 s <- 
@@ -79,31 +84,46 @@ s |>
             .groups = "drop")
 ```
 
-One would use this table e.g. to get an overview of when sampling sites were visited:
+One would use this table e.g. to get an overview of the reported sampled dates:
 
-
-```{r}
-be <- 
-  s |> 
-  filter(site == "Basseterre East",
-         year(date) == 2023) |> 
-  select(site, date, .sid) |> 
+```{r, fig.width = 9, fig.height = 9}
+fm_survey(trim = FALSE) %>% 
+  filter(year(date) == 2024,
+         month(date) == 1) |> 
+  select(site, date) |> 
   distinct() |> 
-  arrange(date)
-sd <- be$date |> lubridate::yday()
+  mutate(survey = TRUE) |> 
+  fm_grid_calendar() |> 
+  mutate(weekend = ifelse(.wday %in% c("Sa", "Su"),
+                          TRUE,
+                          FALSE)) %>% 
+  #filter(site == "Charlestown") |> 
+  ggplot(aes(.wday, .week)) +
+  theme_bw() +
+  geom_tile(aes(fill = survey)) +
+  facet_wrap(~ site) +
+  geom_text(aes(label = .day, colour = weekend)) +
+  scale_fill_manual(values=c("grey80", "pink")) +
+  scale_colour_manual(values = c("black", "red")) +
+  scale_y_reverse(NULL, NULL) +
+  labs(x = NULL,
+       title = "January 2024",
+       caption = "colour: reported sampling day") +
+  coord_equal() +
+  theme(legend.position = "none",
+        legend.title=element_blank(), 
+        panel.grid=element_blank(), 
+        panel.border=element_blank(), 
+        axis.ticks=element_blank(), 
+        strip.background=element_blank(), 
+        #legend.position="top", 
+        legend.justification="right", 
+        legend.direction="horizontal", 
+        legend.key.size=unit(0.3, "cm"), 
+        legend.spacing.x=unit(0.2, "cm"))
 ```
 
-```{r, fig.height = 7, fig.width=9}
-library(calendR)
-calendR(2023,
-        monthnames = month.name,
-        weeknames = c("M", "T", "W", "T", "F", "S", "S"),
-        special.days = sd,
-        special.col = "pink",
-        low.col = "grey90")
-```
-
-### Some issues
+#### Some issues
 
 Do not expect that one can create a survey without a survey date:
 
@@ -120,17 +140,28 @@ f |>
   knitr::kable(caption = "Records of missing survey_date")
 ```
 
-## The trip table (Survey detail table)
+### The trip table (Survey detail table)
 
 ```{r}
 trips <- fm_survey_item()
 trips |> glimpse()
 ```
 
-## The catch table (Survey item table)
+### The catch table (Survey item table)
+
+pending further coding ...
 
 ```{r}
-catch <- fm_sidF()
+catch <- fmr:::fm_sidF()
 catch |> glimpse()
+```
+
+## The wide tables
+
+Of course on can access the wide tables via {fmr} as shown below, but it is not recommended to use them for downstream analysis in R:
+
+```{r}
+fm_landingF() |> glimpse()
+fm_landingV() |> glimpse()
 ```
 

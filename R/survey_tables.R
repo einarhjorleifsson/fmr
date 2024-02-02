@@ -6,6 +6,15 @@
 #   table is split into 3 tables again.
 
 
+
+#' landingF data-warehouse table
+#' 
+#' A wide table consisting elements from the survey_table, survey_item table and 
+#' survey_item_dtl table
+#'
+#' @param key your FM API key
+#'
+#' @return a tibble
 #' @export
 fm_landingF <- function(key) {
   fm_tbl(table = "landingF", key)
@@ -13,7 +22,11 @@ fm_landingF <- function(key) {
 
 # SURVEY table -----------------------------------------------------------------
 
-#' @export
+#' The survey variables in landingF
+#'
+#' @param key your FM API key
+#'
+#' @return a tibble
 fm_sF <- function(key) {
   
   ## selecting - not needed once available on API ------------------------------
@@ -105,7 +118,12 @@ fm_survey <- function(key, std = TRUE, trim = TRUE) {
 #  E.g. trip table
 #   Note gear information are stored in the item table
 
-#' @export
+
+#' The survey_item variables in landingF
+#'
+#' @param key your FM API key
+#'
+#' @return a tibble
 fm_siF <- function(key) {
   
   ## selecting - not needed once available on API ------------------------------
@@ -156,7 +174,6 @@ fm_siF <- function(key) {
 #'
 #' @return a tibble
 #' @export
-
 fm_survey_item <- function(key, std = TRUE, trim = TRUE) {
   d <- 
     fm_siF(key) |> 
@@ -168,9 +185,6 @@ fm_survey_item <- function(key, std = TRUE, trim = TRUE) {
       dplyr::select(vid = vessel_id,
                     vessel = vessel_name,
                     reg = registration_no,
-                    #gid = gear_id,
-                    #gear = friendly_name,
-                    #gcode = code,
                     fuel = fuel_used,
                     hid1 = dep_location_id,
                     t1 = dep_time,
@@ -195,7 +209,11 @@ fm_survey_item <- function(key, std = TRUE, trim = TRUE) {
 
 # SURVEY_ITEM_DTL --------------------------------------------------------------
 
-#' @export
+#' The survey_item_dtl variables in landingF
+#'
+#' @param key your FM API key
+#'
+#' @return a tibble
 fm_sidF <- function(key) {
   fm_landingF(key) |> 
     # should really be and rather than or
@@ -217,6 +235,14 @@ fm_sidF <- function(key) {
 }
 
 
+#' landingV data-warehouse table
+#' 
+#' A wide table consisting elements from the survey_table, survey_item table and 
+#' survey_item_dtl table as well as variables from auxillary tables.
+#'
+#' @param key your FM API key
+#'
+#' @return a tibble
 #' @export
 fm_landingV <- function(key) {
   fm_tbl(table = "landingV", key) |> 

@@ -7,3 +7,5 @@
 ^vignettes/articles$
 README.Rmd
 ^data-info$
+^garbage$
+fmr.Rproj

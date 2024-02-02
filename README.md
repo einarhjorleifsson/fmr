@@ -8,10 +8,14 @@
 
 The goal of {fmr} is to:
 
-- Establish R-connection to Fisheries Technology Management (FTM) Oracle
-  database
+- Establish R-connection to [Fisheries
+  Technologies](https://fishtech.is) [The Fisheries
+  Manager](https://fimsehf.atlassian.net/wiki/spaces/FT/overview?homepageId=3175186440)
+  data
+  - The current communication is via API’s that provides data in
+    json-format
 - Provide convenient functions to FTM tables and views
-- Provide Rmarkdown report templates for various standardized reports
+- Provide markdown report templates for various standardized reports
 - R-code examples for data analysis and graphical presentations
 
 ## Quick start
@@ -28,7 +32,7 @@ key <- "your FM API key"
 
 ``` r
 fm_survey(key) |> glimpse()
-#> Rows: 2,277
+#> Rows: 2,294
 #> Columns: 5
 #> $ site      <chr> "Basseterre West", "Basseterre West", "Basseterre West", "Ba…
 #> $ island    <chr> "Saint Kitts", "Saint Kitts", "Saint Kitts", "Saint Kitts", …

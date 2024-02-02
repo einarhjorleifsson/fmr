@@ -1,6 +1,6 @@
 Package: fmr
 Title: Establish R-connection to Fisheries Manager (FM)
-Version: 0.0.0.9000
+Version: 2024-02-02
 Authors@R: 
     person("Einar", "Hjorleifsson", , "einar.hjorleifsson@gmail.com", role = c("aut", "cre"),
            comment = c(ORCID = "YOUR-ORCID-ID"))
