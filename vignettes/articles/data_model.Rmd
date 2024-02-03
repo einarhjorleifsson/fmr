@@ -33,7 +33,7 @@ The conceptual design (if one is considering catch-sampling on landing sites) is
 knitr::include_graphics(here::here("vignettes/articles/data_model1.png"))
 ```
 
-The FM 3 table framework is not specific for sampling from landings, but lets here think about these tree tables in that context.
+The FM 3 table framework is not specific for sampling from landings, but lets here think about these three tables in that context.
 
 1. Sampling site table (survey table): For catch-sampling from landings data one could imagine that each row represents information about the sampling from a particular sampling site on a particular sampling date (this though not the necessary case as discussed below).
 2. Trip table (survey detail table): In case of catch sampling from landings this table should contain all information related to a single fishing trip except details of catch.

@@ -8,13 +8,12 @@
 
 The goal of {fmr} is to:
 
-- Establish R-connection to [Fisheries
-  Technologies](https://fishtech.is) [The Fisheries
+- Establish R-connection to [The Fisheries
   Manager](https://fimsehf.atlassian.net/wiki/spaces/FT/overview?homepageId=3175186440)
-  data
+  data provided by [Fisheries Technologies](https://fishtech.is)
   - The current communication is via API’s that provides data in
     json-format
-- Provide convenient functions to FTM tables and views
+- Provide wrapper functions to FTM tables and views
 - Provide markdown report templates for various standardized reports
 - R-code examples for data analysis and graphical presentations
 

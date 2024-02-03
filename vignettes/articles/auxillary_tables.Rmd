@@ -1,0 +1,76 @@
+---
+title: "Auxillary tables"
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  message = FALSE,
+  warning = FALSE,
+  comment = "#>"
+)
+```
+
+```{r}
+library(fmr)
+library(tidyverse)
+```
+
+## Preamble
+
+This document is just to explore the FM data model, done to prevent any misunderstanding when setting up the downstream code.
+
+## Site
+
+```{r}
+fmr:::fm_site(trim = FALSE) |> glimpse()
+```
+
+## Vessel
+
+### vesselF
+
+```{r}
+fmr:::fm_vesselF() |> glimpse()
+```
+
+### vesselD
+
+```{r}
+fmr:::fm_vesselD() |> glimpse()
+```
+
+## licence
+
+### licenceF
+
+```{r}
+fmr:::fm_licence_f() |> glimpse()
+```
+
+### licenceV
+
+```{r}
+fmr:::fm_licence() |> glimpse()
+```
+
+## party
+
+### partyF ???
+
+...
+
+### partyV
+
+```{r}
+fmr:::fm_party() |> glimpse()
+```
+
+## choice
+
+### choiceD
+
+```{r}
+# fmr:::fm_choice() |> glimpse()
+```
+

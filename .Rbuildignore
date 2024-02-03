@@ -9,3 +9,4 @@ README.Rmd
 ^data-info$
 ^garbage$
 fmr.Rproj
+^data-raw$
