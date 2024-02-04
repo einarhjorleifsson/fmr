@@ -6,7 +6,6 @@
 #   table is split into 3 tables again.
 
 
-
 #' landingF data-warehouse table
 #' 
 #' A wide table consisting elements from the survey_table, survey_item table and 
@@ -94,19 +93,15 @@ fm_survey <- function(key, std = TRUE, trim = TRUE) {
     dplyr::select(site, island, landing_date, time, survey_id, dplyr::everything())
   
   if(std) {
-    # to be moved into global vocabulary
-    fm_name <- c("landing_date", "created_by", "created_date")
-    fmr_name <- c("date", "cn", "ct")
-    naming_key <- stats::setNames(object = fm_name, nm = fmr_name)
     
     d <-
       d |> 
-      dplyr::rename(dplyr::any_of(naming_key))
+      dplyr::rename(dplyr::any_of(vocabulary))
     
     if(trim) {
       d <-
         d |> 
-        dplyr::select(site:survey_id)
+        dplyr::select(site:.s1)
     }
   }
   
@@ -177,34 +172,38 @@ fm_siF <- function(key) {
 fm_survey_item <- function(key, std = TRUE, trim = TRUE) {
   d <- 
     fm_siF(key) |> 
-    dplyr::left_join(fm_vessel(key),
+    dplyr::left_join(fm_vesselD(key) |> 
+                       dplyr::select(vessel_id,
+                                     vessel_name,
+                                     registration_no),
                      by = dplyr::join_by(vessel_id))
   if(std) {
     d <- 
       d |> 
-      dplyr::select(vid = vessel_id,
-                    vessel = vessel_name,
-                    reg = registration_no,
-                    fuel = fuel_used,
-                    hid1 = dep_location_id,
-                    t1 = dep_time,
-                    hid2 = arr_location_id,
-                    t2 = arr_time,
-                    fuel = fuel_used,
-                    survey_item_id,
-                    survey_id,
+      dplyr::rename(dplyr::any_of(vocabulary)) |> 
+      dplyr::select(vessel,
+                    reg,
+                    fuel,
+                    T1,
+                    T2,
+                    fuel,
+                    vid,
+                    .s1,
+                    .s2,
+                    hid1,
+                    hid2,
                     dplyr::everything())
   }
   
   if(trim) {
     d <- 
       d |> 
-      dplyr::select(vid:survey_id)
+      dplyr::select(vessel:.s2)
   }
   
   return(d)
 }
-
+fm_trip <- fm_survey_item
 
 
 # SURVEY_ITEM_DTL --------------------------------------------------------------

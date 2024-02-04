@@ -48,11 +48,21 @@ fm_site <- function(key, std = TRUE, trim = TRUE) {
 }
 
 # vessels ----------------------------------------------------------------------
+#' Vessel fact table (vesselF)
+#'
+#' @param key your FM API key
+#'
+#' @return a tibble
 fm_vesselF <- function(key) {
   fm_tbl(table = "vesselF", key) |> 
     janitor::clean_names()
 }
 
+#' Vessel table (vesselD)
+#'
+#' @param key your FM API key
+#'
+#' @return a tibble
 fm_vesselD <- function(key) {
   fm_tbl(table = "vesselD", key) |> 
     janitor::clean_names()
@@ -74,6 +84,12 @@ fm_vessel <- function(key) {
                   registration_no)
 }
 
+#' Vessel class table (vesselclassD)
+#'
+#' @param key your FM API
+#'
+#' @return a tibble
+#' @export
 fm_vessel_class <- function(key) {
   fm_tbl(table = "vesselclassD", key)
 }
@@ -102,44 +118,84 @@ fm_gear <- function(key, std = TRUE, trim = TRUE) {
   return(d)
 }
 
-fm_licence <- function(key, std = TRUE, trim = TRUE) {
+# License ----------------------------------------------------------------------
+
+#' license fact table (licenseF)
+#'
+#' @param key your FM API key
+#'
+#' @return a tibble
+fm_licenseF <- function(key) {
+  fm_tbl(table = "licenseF", key)
+}
+
+#' license view table (licenseV)
+#'
+#' @param key your FM API key
+#'
+#' @return a tibble
+fm_licenseV <- function(key) {
   fm_tbl(table = "licenseV", key)
 }
 
+# Choice -----------------------------------------------------------------------
 
+#' choice table (choiceD)
+#'
+#' @param key your FM API key
+#'
+#' @return a tibble
 fm_choice <- function(key) {
   fm_tbl(table == "choiceD", key)
 }
 
-fm_coordinates <- function(key) {
+# Species table ----------------------------------------------------------------
+#' species table (specieD)
+#'
+#' @param key your FM API key
+#'
+#' @return a tibble
+fm_speciesD <- function(key) {
+  fm_tbl(table = "specieD", key) |> 
+    janitor::clean_names()
+}
+
+
+# Any other table --------------------------------------------------------------
+#' coordinate table (coordinateD)
+#'
+#' @param key your FM API key
+#'
+#' @return a tibble
+fm_coordinateD <- function(key) {
   fm_tbl(table == "coordinateD", key)
 }
 
-
-fm_country <- function(key) {
+#' country table (countryD)
+#'
+#' @param key your FM API key
+#'
+#' @return a tibble
+fm_countryD <- function(key) {
   fm_tbl(table == "countryD", key)
 }
 
-fm_licence <- function(key) {
-  fm_tbl(table = "licenseV", key)
-}
 
-fm_licence_f <- function(key) {
-  fm_tbl(table = "licenseF", key)
-}
-
+#' location table (locationD)
+#'
+#' @param key your FM API key
+#'
+#' @return a tibble
 fm_location <- function(key) {
   fm_tbl(table == "locationD", key)
 }
 
-fm_species <- function(key) {
-  fm_tbl(table = "specieD", key) |> 
-    janitor::clean_names() |> 
-    dplyr::rename(species = friendly_name) |> 
-    dplyr::mutate(species = stringr::str_squish(species))
-}
-
-fm_survey_date <- function(key) {
+#' surveydate table (surveydateD)
+#'
+#' @param key your FM API key
+#'
+#' @return a tibble
+fm_surveydateD <- function(key) {
   fm_tbl(table = "surveydateD", key) |> 
     janitor::clean_names() |> 
     dplyr::rename(date = survey_date) |> 
@@ -151,17 +207,21 @@ fm_survey_date <- function(key) {
                   quarter = as.integer(quarter))
 }
 
-fm_tentant <- function(key) {
+#' tenant table (tenantD)
+#'
+#' @param key your FM API key
+#'
+#' @return a tibble
+fm_tentantD <- function(key) {
   fm_tbl(table = "tenantD", key)
 }
 
 
-
-
-
-
-
-
-fm_party <- function(key) {
+#' party table (partyV)
+#'
+#' @param key your FM API key
+#'
+#' @return a tibble
+fm_partyV <- function(key) {
   fm_tbl(table = "partyV", key)
 }
