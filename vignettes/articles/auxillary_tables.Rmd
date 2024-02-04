@@ -45,25 +45,22 @@ fmr:::fm_vesselD() |> glimpse()
 ### licenceF
 
 ```{r}
-fmr:::fm_licence_f() |> glimpse()
+fmr:::fm_licenseF() |> glimpse()
 ```
 
 ### licenceV
 
 ```{r}
-fmr:::fm_licence() |> glimpse()
+fmr:::fm_licenseV() |> glimpse()
 ```
 
 ## party
 
-### partyF ???
-
-...
 
 ### partyV
 
 ```{r}
-fmr:::fm_party() |> glimpse()
+fmr:::fm_partyV() |> glimpse()
 ```
 
 ## choice
@@ -71,6 +68,6 @@ fmr:::fm_party() |> glimpse()
 ### choiceD
 
 ```{r}
-# fmr:::fm_choice() |> glimpse()
+#fmr:::fm_choice() |> glimpse()
 ```
 

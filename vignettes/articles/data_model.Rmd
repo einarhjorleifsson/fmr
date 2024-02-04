@@ -58,12 +58,12 @@ s <- fm_survey()
 s |> glimpse()
 ```
 
-Each survey is identified by a unique value stored as *survey_id*. Intuitively one expects that each survey_id constitutes a unique number for each landing site (*site*) by each sampling day (*date*). This is however not necessarily the case as demonstrated here:
+Each survey is identified by a unique value stored as *.s1* (*survey_id*). Intuitively one expects that each survey id constitutes a unique number for each landing site (*site*) by each sampling day (*date*). This is however not necessarily the case as demonstrated here:
 
 ```{r}
 s |> 
   group_by(site, date) |> 
-  summarise(n_surveyid = n_distinct(survey_id),
+  summarise(n_surveyid = n_distinct(.s1),
             .groups = "drop")
 ```
 
@@ -80,7 +80,7 @@ s <-
   select(-.rowid)
 s |> 
   summarise(n_sid = n_distinct(.sid),
-            n_surveyid = n_distinct(survey_id),
+            n_surveyid = n_distinct(.s1),
             .groups = "drop")
 ```
 
@@ -158,10 +158,15 @@ catch |> glimpse()
 
 ## The wide tables
 
-Of course on can access the wide tables via {fmr} as shown below, but it is not recommended to use them for downstream analysis in R:
+Of course on can access the wide tables provided by FM via {fmr} as shown below, but it is not recommended to use them for downstream analysis in R:
 
+### landing F
 ```{r}
 fm_landingF() |> glimpse()
+```
+
+### landingV
+```{r}
 fm_landingV() |> glimpse()
 ```
 
