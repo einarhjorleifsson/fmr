@@ -6,19 +6,6 @@
 #   table is split into 3 tables again.
 
 
-#' landingF data-warehouse table
-#' 
-#' A wide table consisting elements from the survey_table, survey_item table and 
-#' survey_item_dtl table
-#'
-#' @param key your FM API key
-#'
-#' @return a tibble
-#' @export
-fm_landingF <- function(key) {
-  fm_tbl(table = "landingF", key)
-}
-
 # SURVEY table -----------------------------------------------------------------
 
 #' The survey variables in landingF
@@ -70,7 +57,7 @@ fm_sF <- function(key) {
 #' \describe{
 #' \item{\code{site}}{Name of the (landing) site}
 #' \item{\code{island}}{Name of the island, returned in some cases}
-#' \item{\code{date}}{Date of the survey}
+#' \item{\code{date}}{Date of the survey, a derived variable from variable time.}
 #' \item{\code{time}}{Time of the survey}
 #' \item{\code{survey_id}}{Numerical code, used to join to other tables}
 #' }
@@ -111,8 +98,8 @@ fm_survey <- function(key, std = TRUE, trim = TRUE) {
 
 # SURVEY_ITEM table ------------------------------------------------------------
 #  E.g. trip table
-#   Note gear information are stored in the item table
-
+#   Note gear information are stored both in the item table and in the 
+#    item detail table
 
 #' The survey_item variables in landingF
 #'
@@ -203,6 +190,8 @@ fm_survey_item <- function(key, std = TRUE, trim = TRUE) {
   
   return(d)
 }
+
+
 fm_trip <- fm_survey_item
 
 
@@ -231,22 +220,5 @@ fm_sidF <- function(key) {
                   survey_item_id,
                   # for debugging
                   .rid = id)
-}
-
-
-#' landingV data-warehouse table
-#' 
-#' A wide table consisting elements from the survey_table, survey_item table and 
-#' survey_item_dtl table as well as variables from auxillary tables.
-#'
-#' @param key your FM API key
-#'
-#' @return a tibble
-#' @export
-fm_landingV <- function(key) {
-  fm_tbl(table = "landingV", key) |> 
-    dplyr::mutate(landing_date = lubridate::ymd_hms(landing_date),
-                  landing_date_time_str = lubridate::dmy_hm(landing_date_time_str),
-                  created_date_time_str = lubridate::dmy_hm(created_date_time_str))
 }
 

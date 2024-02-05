@@ -4,10 +4,41 @@
 \alias{fm_vessel}
 \title{Vessel table}
 \usage{
-fm_vessel(key)
+fm_vessel(
+  key,
+  std = TRUE,
+  trim = TRUE,
+  remove_empty = TRUE,
+  owner = FALSE,
+  operator = FALSE
+)
+
+fm_vessel(
+  key,
+  std = TRUE,
+  trim = TRUE,
+  remove_empty = TRUE,
+  owner = FALSE,
+  operator = FALSE
+)
 }
 \arguments{
-\item{key}{your FM API}
+\item{key}{your FM API key}
+
+\item{std}{boolean, if TRUE (default) variables are renamed according to
+{fmr} convention}
+
+\item{trim}{boolean, if TRUE (default) only essential (standard) variables
+are returned. Only active if arguement std is set to TRUE.}
+
+\item{remove_empty}{boolean, if TRUE (default) drops variables composed
+entirely of NA values}
+
+\item{owner}{boolean, if TRUE adds owner name (first, middle and last name)
+as a single string}
+
+\item{operator}{boolean, if TRUE adds operator name (first, middle and last
+name) as a single string}
 }
 \value{
 a tibble

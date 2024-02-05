@@ -8,7 +8,7 @@ A data frame with nine variables:
 \describe{
 \item{\code{site}}{Name of the (landing) site}
 \item{\code{island}}{Name of the island, returned in some cases}
-\item{\code{date}}{Date of the survey}
+\item{\code{date}}{Date of the survey, a derived variable from variable time.}
 \item{\code{time}}{Time of the survey}
 \item{\code{survey_id}}{Numerical code, used to join to other tables}
 }
