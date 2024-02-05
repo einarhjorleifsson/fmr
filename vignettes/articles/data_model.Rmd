@@ -53,8 +53,7 @@ The data can obtained by:
 
 ```{r}
 s <- 
-  fm_survey(trim = FALSE) |> 
-  janitor::remove_empty(which = "cols")
+  fm_survey(trim = FALSE)
 s |> glimpse()
 ```
 
@@ -141,6 +140,11 @@ f |>
 ```
 
 ### The trip table (Survey detail table)
+
+```{r}
+trip <- fm_trip()
+trip |> glimpse()
+```
 
 
 ### The catch table (Survey item table)

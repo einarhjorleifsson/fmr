@@ -16,7 +16,7 @@ A data frame with nine variables:
 For further details, see \url{https://fimsehf.atlassian.net/wiki/spaces/FT/pages/3283812558/New+The+Data+Structure+Explained}
 }
 \usage{
-fm_survey(key, std = TRUE, trim = TRUE)
+fm_survey(key, std = TRUE, trim = TRUE, remove_empty = TRUE)
 }
 \arguments{
 \item{key}{your FM API key}
@@ -26,6 +26,9 @@ fm_survey(key, std = TRUE, trim = TRUE)
 
 \item{trim}{boolean, if TRUE (defaul) only essential (standard) variables
 are returned. Only active if arguement std is set to TRUE.}
+
+\item{remove_empty}{boolean, if TRUE (default) remove variables whose values
+are all NA's}
 }
 \value{
 a tibble

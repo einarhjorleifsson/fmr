@@ -34,6 +34,8 @@ fm_survey_api <- function(key) {
 #' {fmr} convention
 #' @param trim boolean, if TRUE (defaul) only essential (standard) variables
 #' are returned. Only active if arguement std is set to TRUE.
+#' @param remove_empty boolean, if TRUE (default) remove variables whose values 
+#' are all NA's
 #' 
 #' @return a tibble
 #' 
@@ -50,7 +52,7 @@ fm_survey_api <- function(key) {
 #' 
 #' @export
 #'
-fm_survey <- function(key, std = TRUE, trim = TRUE) {
+fm_survey <- function(key, std = TRUE, trim = TRUE, remove_empty = TRUE) {
   
   d <- 
     fm_survey_api(key) |> 
@@ -73,6 +75,12 @@ fm_survey <- function(key, std = TRUE, trim = TRUE) {
         d |> 
         dplyr::select(site:.s1)
     }
+  }
+  
+  if(remove_empty) {
+    d <- 
+      d |> 
+      janitor::remove_empty(which = "cols")
   }
   
   return(d)
