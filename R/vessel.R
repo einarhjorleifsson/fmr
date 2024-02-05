@@ -79,8 +79,9 @@ fm_vessel <- function(key, std = TRUE, trim = TRUE, remove_empty = TRUE, owner =
       dplyr::left_join(fm_partyV(key) |> 
                          tidyr::unite("owner", first_name:last_name,
                                       na.rm = TRUE, sep = " ") |> 
-                         dplyr::select(owner_id = party_id,
-                                       owner)) |> 
+                         dplyr::select(party_id,
+                                       owner),
+                       by = dplyr::join_by(owner_id == party_id)) |> 
       dplyr::select(-owner_id)
   }
   
@@ -90,8 +91,9 @@ fm_vessel <- function(key, std = TRUE, trim = TRUE, remove_empty = TRUE, owner =
       dplyr::left_join(fm_partyV(key) |> 
                          tidyr::unite("operator", first_name:last_name, 
                                       na.rm = TRUE, sep = " ") |> 
-                         dplyr::select(operator_id = party_id,
-                                       operator)) |> 
+                         dplyr::select(party_id,
+                                       operator),
+                       by = dplyr::join_by(operator_id == party_id)) |> 
       dplyr::select(-operator_id)
   }
   
