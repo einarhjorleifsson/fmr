@@ -55,10 +55,9 @@ fm_vessel <- function(key) {
 #' @param operator boolean, if TRUE adds operator name (first, middle and last 
 #' name) as a single string
 #'
-#' @return
+#' @return a tibble
 #' @export
 #'
-#' @examples
 fm_vessel <- function(key, std = TRUE, trim = TRUE, remove_empty = TRUE, owner = FALSE, operator = FALSE) {
   d <- 
     fm_vesselF()

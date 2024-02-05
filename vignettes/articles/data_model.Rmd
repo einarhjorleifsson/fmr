@@ -45,16 +45,16 @@ Wide-tables where one has repeated records of the same measure create a bit of a
 
 ## The three survey tables
 
-As of this moment there are no API's to access all the variables within each of the three survey tables. Thus for now three functions are made available in the {fmr} that reverse engineer the flat-file API (landingF) into the separate components. The returned variables from these functions are of course limited to those provided in the wide API.
-
 
 ### The landing site-date table (Survey table)
 
 Information about each (landing) survey can be retrieved with the {fmr::fm_survey}-function. 
-The data in main sampling table can obtained by:
+The data can obtained by:
 
 ```{r}
-s <- fm_survey()
+s <- 
+  fm_survey(trim = FALSE) |> 
+  janitor::remove_empty(which = "cols")
 s |> glimpse()
 ```
 
@@ -74,7 +74,7 @@ s <-
   s |> 
   # just so we can get the original order back
   mutate(.rowid = 1:n()) |> 
-  arrange(site, date, time) |> 
+  arrange(site, date, T1) |> 
   mutate(.sid = dplyr::consecutive_id(site, date)) |> 
   arrange(.rowid) |> 
   select(-.rowid)
@@ -142,23 +142,15 @@ f |>
 
 ### The trip table (Survey detail table)
 
-```{r}
-trips <- fm_survey_item()
-trips |> glimpse()
-```
 
 ### The catch table (Survey item table)
 
 pending further coding ...
 
-```{r}
-catch <- fmr:::fm_sidF()
-catch |> glimpse()
-```
 
 ## The wide tables
 
-Of course on can access the wide tables provided by FM via {fmr} as shown below, but it is not recommended to use them for downstream analysis in R:
+Of course on can access the wide tables provided by FM via {fmr} as shown below. Although wide tables are often used when using spreadsheet software, it is not recommended to use them for downstream analysis in R:
 
 ### landing F
 ```{r}

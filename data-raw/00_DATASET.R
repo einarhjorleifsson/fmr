@@ -11,6 +11,11 @@ specs_survey <-
                                   v == "survey_start_time" ~ "T1",
                                   v == "survey_stop_time"  ~ "T2",
                                   v == "rnk"               ~ "rank",    # typo?
+                                  
+                                  v == "created_by"        ~ ".cn",
+                                  v == "created_time"      ~ ".ct",
+                                  v == "updated_by"        ~ ".un",
+                                  v == "updated_time"      ~ ".ut",
                                   .default = v),
          .before = v) |> 
   rename(fm_variable = v)
@@ -61,7 +66,13 @@ v <-
   bind_rows(specs_survey,
             specs_survey_item,
             specs_survey_item_dtl) |> 
-  filter(fmr_variable != fm_variable)
+  filter(fmr_variable != fm_variable) |> 
+  select(fmr_variable, fm_variable) |> 
+  add_row(fmr_variable = c("lon", "lat"),
+          fm_variable = c("longitude", "latitude")) |> 
+  add_row(fmr_variable = c(".ct", ".ut", ".un"),
+          fm_variable = c("created_date", "last_modified_date", "last_modified_by")) |> 
+  distinct()
 vocabulary <- stats::setNames(object = v$fm_variable, nm = v$fmr_variable)
 
 usethis::use_data(vocabulary, overwrite = TRUE)

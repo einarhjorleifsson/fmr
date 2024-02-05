@@ -66,7 +66,7 @@ fm_sF <- function(key) {
 #' 
 #' @export
 #'
-fm_survey <- function(key, std = TRUE, trim = TRUE) {
+fm_survey_old <- function(key, std = TRUE, trim = TRUE) {
   
   d <- 
     fm_sF(key) |> 
@@ -156,7 +156,7 @@ fm_siF <- function(key) {
 #'
 #' @return a tibble
 #' @export
-fm_survey_item <- function(key, std = TRUE, trim = TRUE) {
+fm_survey_item_old <- function(key, std = TRUE, trim = TRUE) {
   d <- 
     fm_siF(key) |> 
     dplyr::left_join(fm_vesselD(key) |> 
@@ -191,8 +191,6 @@ fm_survey_item <- function(key, std = TRUE, trim = TRUE) {
   return(d)
 }
 
-
-fm_trip <- fm_survey_item
 
 
 # SURVEY_ITEM_DTL --------------------------------------------------------------
