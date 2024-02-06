@@ -1,5 +1,11 @@
 # SURVEY table -----------------------------------------------------------------
 
+# 2024-02-06 For the time being there is no filter on the survey_type_id, because
+#            there is only one (1817 - Landing)
+#            In the future, once multiple survey types have been entered in the
+#            database one could forsee having to create convenient wrapper
+#            functions. Need to start thinking about naming conventions.
+
 #' The survey table
 #'
 #' @param key your FM API key
@@ -54,20 +60,37 @@ fm_survey_api <- function(key) {
 #'
 fm_survey <- function(key, std = TRUE, trim = TRUE, remove_empty = TRUE) {
   
+  ch <- fm_choice(key)
+  party <- 
+    fm_tbl("partyD", key) |> 
+    tidyr::unite(col = "collector", first_name, middle_name, last_name, sep = " ", na.rm = TRUE) |> 
+    dplyr::select(data_collector_id = party_id, collector)
+  
+  
   d <- 
     fm_survey_api(key) |> 
     dplyr::left_join(fm_site(key, trim = FALSE) |> 
                        dplyr::select(party_id,
                                      site,
                                      island),
-                     by = dplyr::join_by(landing_site_id == party_id))
+                     by = dplyr::join_by(landing_site_id == party_id)) |> 
+    dplyr::left_join(ch |> 
+                       dplyr::select(choice_id, status = code),
+                     by = dplyr::join_by(survey_status_id == choice_id)) |> 
+    dplyr::left_join(party,
+                     by = dplyr::join_by(data_collector_id))
+    
   
   if(std) {
     
     d <-
       d |> 
       dplyr::rename(dplyr::any_of(vocabulary)) |> 
-      dplyr::select(site, island, date, T1, T2, total_boats, .s1, dplyr::everything()) |> 
+      dplyr::select(site, island, status, date, T1, T2, 
+                    total_boats, comment,
+                    collector,
+                    .cn, .ct, .un, .ut, .s1, 
+                    dplyr::everything()) |> 
       dplyr::mutate(date = lubridate::as_date(date))
     
     if(trim) {

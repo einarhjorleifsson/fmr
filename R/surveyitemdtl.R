@@ -1,5 +1,5 @@
 
-#' The surveyitem api table
+#' The surveyitemdtl api table
 #'
 #' The function gets the data from the FM api and ensure correct variable types.
 #' Variable names and order as as it comes from the API. The user should 
@@ -8,23 +8,32 @@
 #' @param key your FM API key
 #'
 #' @return a tibble
-fm_surveyitem_api <- function(key) {
+fm_surveyitemdtl_api <- function(key) {
   d <- 
-    fm_tbl(table = "surveyItem", key) |> 
+    fm_tbl(table = "surveyItemDtl", key) |> 
     dplyr::mutate(dplyr::across(c(dplyr::ends_with("_id"),
-                                  fuel_used,
-                                  rank), 
+                                  weight,
+                                  price,
+                                  no_of_gears,
+                                  gear_size,
+                                  no_of_sets,
+                                  soak_time,
+                                  depth_min,
+                                  depth_max,
+                                  is_by_catch,
+                                  is_targetted,
+                                  item_count,
+                                  batch_no,
+                                  cooler_no), 
                                 as.numeric),
-                  dplyr::across(c(dep_time,
-                                  arr_time,
-                                  created_date,
+                  dplyr::across(c(created_date,
                                   last_modified_date), 
                                 lubridate::ymd_hms))
 }
 
 
 
-#' The surveyitem table
+#' The surveyitemdtl table
 #'
 #' The function returns information about each ...
 #' 
@@ -44,22 +53,10 @@ fm_surveyitem_api <- function(key) {
 #' }
 #' 
 #' @export
-fm_surveyitem <- function(key, std = TRUE, trim = TRUE, remove_empty = TRUE) {
+fm_surveyitemdtl <- function(key, std = TRUE, trim = TRUE, remove_empty = TRUE) {
   
-  site <- 
-    fm_site(key) |> 
-    dplyr::select(party_id, site)
   d <- 
-    fm_surveyitem_api(key) |> 
-    dplyr::left_join(fm_vesselD(key) |> 
-                       dplyr::select(vessel_id,
-                                     vessel_name,
-                                     registration_no),
-                     by = dplyr::join_by(vessel_id)) |> 
-    dplyr::left_join(site |> dplyr::rename(site1 = site, dep_location_id = party_id),
-                     by = dplyr::join_by(dep_location_id)) |> 
-    dplyr::left_join(site |> dplyr::rename(site2 = site, arr_location_id = party_id),
-                     by = dplyr::join_by(arr_location_id)) |> 
+    fm_surveyitemdtl_api(key) |> 
     dplyr::select(vessel_id, vessel_name, registration_no,
                   gear_id,
                   dep_time, arr_time, fuel_used, comment,

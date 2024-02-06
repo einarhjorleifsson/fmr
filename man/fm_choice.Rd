@@ -4,10 +4,12 @@
 \alias{fm_choice}
 \title{choice table (choiceD)}
 \usage{
-fm_choice(key)
+fm_choice(key, std = TRUE)
 }
 \arguments{
 \item{key}{your FM API key}
+
+\item{std}{boolean, if TRUE (default) returns shorter names}
 }
 \value{
 a tibble
