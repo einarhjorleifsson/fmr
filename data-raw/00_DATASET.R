@@ -62,10 +62,22 @@ specs_survey_item_dtl <-
          .after = table) |> 
   rename(fm_variable = v)
 
+vessel <- fmr::fm_tbl("vesselF")
+vessel <- 
+  tibble(v = names(vessel)) |> 
+  mutate(table = "vesselF") |> 
+  select(table, v) |> 
+  mutate(fmr_variable = case_when(v == "vessel_id"        ~ "vid",
+                                  v == "vessel_name"      ~ "vessel",
+                                  v == "registration_no"  ~ "regno",
+                                  .default = v)) |> 
+  rename(fm_variable = v)
+
 v <- 
   bind_rows(specs_survey,
             specs_survey_item,
-            specs_survey_item_dtl) |> 
+            specs_survey_item_dtl,
+            vessel) |> 
   filter(fmr_variable != fm_variable) |> 
   select(fmr_variable, fm_variable) |> 
   add_row(fmr_variable = c("lon", "lat"),

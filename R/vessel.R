@@ -41,7 +41,7 @@ fm_vessel <- function(key) {
 
 
 
-#' Title
+#' Vessel informations
 #'
 #' @param key your FM API key
 #' @param std boolean, if TRUE (default) variables are renamed according to 
@@ -50,17 +50,17 @@ fm_vessel <- function(key) {
 #' are returned. Only active if arguement std is set to TRUE.
 #' @param remove_empty  boolean, if TRUE (default) drops variables composed 
 #' entirely of NA values
-#' @param owner boolean, if TRUE adds owner name (first, middle and last name)
+#' @param add_owner boolean, if TRUE (default) adds owner name (first, middle and last name)
 #' as a single string
-#' @param operator boolean, if TRUE adds operator name (first, middle and last 
+#' @param add_operator boolean, if TRUE (default) adds operator name (first, middle and last 
 #' name) as a single string
 #'
 #' @return a tibble
 #' @export
 #'
-fm_vessel <- function(key, std = TRUE, trim = TRUE, remove_empty = TRUE, owner = FALSE, operator = FALSE) {
-  d <- 
-    fm_vesselF()
+fm_vessel <- function(key, std = TRUE, trim = TRUE, remove_empty = TRUE, add_owner = FALSE, add_operator = FALSE) {
+  
+  d <- fm_vesselF()
   
   if(std) {
     d <- 
@@ -72,7 +72,7 @@ fm_vessel <- function(key, std = TRUE, trim = TRUE, remove_empty = TRUE, owner =
     }
   }
   
-  if(owner) {
+  if(add_owner) {
     d <-
       d |> 
       dplyr::left_join(fm_partyV(key) |> 
@@ -84,7 +84,7 @@ fm_vessel <- function(key, std = TRUE, trim = TRUE, remove_empty = TRUE, owner =
       dplyr::select(-owner_id)
   }
   
-  if(operator) {
+  if(add_operator) {
     d <- 
       d |> 
       dplyr::left_join(fm_partyV(key) |> 
