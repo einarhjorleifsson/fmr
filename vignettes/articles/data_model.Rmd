@@ -144,9 +144,10 @@ Do not expect that one can create a survey without a survey date:
 s1 |> 
   filter(is.na(date)) |> 
   select(.s1, site, date, status, T1, T2, n_boats = total_boats, comment,
+         collector,
          .cn:.ut) |> 
   arrange(.s1) |> 
-  knitr::kable(caption = "Records of missing survey dates")
+  glimpse()
 ```
 
 ### The surveyitem table
@@ -156,10 +157,11 @@ s2 <- fm_surveyitem(key, trim = FALSE)
 s2 |> glimpse()
 ```
 
-### The surveyitem_dtl table
+### The surveyitemdtl table
 
 ```{r}
-
+s3 <- fmr::fm_surveyitemdtl(key)
+s3 |> glimpse()
 ```
 
 

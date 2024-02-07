@@ -56,14 +56,18 @@ fm_surveyitemdtl_api <- function(key) {
 fm_surveyitemdtl <- function(key, std = TRUE, trim = TRUE, remove_empty = TRUE) {
   
   d <- 
-    fm_surveyitemdtl_api(key) |> 
-    dplyr::select(vessel_id, vessel_name, registration_no,
-                  gear_id,
-                  dep_time, arr_time, fuel_used, comment,
-                  site1, site2,
-                  created_by, created_date,
-                  last_modified_by, last_modified_date,
-                  survey_item_id, survey_id,
+    fmr:::fm_surveyitemdtl_api(key) |> 
+    # should be removed downstream
+    janitor::remove_empty(which = "cols") |> 
+    # anything to do with gear first - guess could be thought of as "synis_id"
+    dplyr::select(gear_id, gear_size, no_of_sets, soak_time,
+                  depth_min, depth_max, 
+                  no_of_gears,
+                  fishing_zone_id,
+                  measurement_type_id,
+                  termination_reason_id,
+                  survey_item_id,
+                  survey_item_dtl_id,
                   dplyr::everything())
   
   if(std) {
@@ -72,10 +76,10 @@ fm_surveyitemdtl <- function(key, std = TRUE, trim = TRUE, remove_empty = TRUE) 
       d |> 
       dplyr::rename(dplyr::any_of(vocabulary))
     
-    if(trim) {
+    if(FALSE) {
       d <-
         d |> 
-        dplyr::select(vid:.s1)
+        dplyr::select(gear_id:.s3)
     }
   }
   
@@ -88,16 +92,3 @@ fm_surveyitemdtl <- function(key, std = TRUE, trim = TRUE, remove_empty = TRUE) 
   
 }
 
-#' A trip table
-#' 
-#' @note For now same as fm_surveytable with default arguments. In future will
-#' most likely need a filter using one of the _id, _class or _category
-#'
-#' @param key your FM API key
-#'
-#' @return a tibble
-#' @export
-#'
-fm_trip <- function(key) {
-  fm_surveyitem(key)
-}
