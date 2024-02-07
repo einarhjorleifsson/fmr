@@ -42,6 +42,8 @@ name) as a single string}
 }
 \value{
 a tibble
+
+a tibble
 }
 \description{
 For the time being simple, only 3 variables returned

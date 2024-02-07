@@ -1,0 +1,35 @@
+Name                  Null     Type
+--------------------- -------- ------------- 
+SURVEY_ID             NOT NULL NUMBER        
+SURVEY_NAME                    VARCHAR2(128) 
+SURVEY_TYPE_ID                 NUMBER        
+SURVEY_STATUS_ID               NUMBER        
+SURVEY_DATE                    TIMESTAMP(6)  
+SURVEY_START_TIME              TIMESTAMP(6)  
+SURVEY_STOP_TIME               TIMESTAMP(6)  
+SURVEY_CLIMATE_ID              NUMBER        
+SURVEY_SYSTEM_TYPE_ID          NUMBER        
+SURVEY_PERIOD_FROM             TIMESTAMP(6)  
+SURVEY_PERIOD_TO               TIMESTAMP(6)  
+LANDING_SITE_ID                NUMBER        
+FISHING_MODE_ID                NUMBER        
+INTERVIEW_TYPE_ID              NUMBER        
+BIAS_TYPE_ID                   NUMBER        
+FISHERIES_ID                   NUMBER        
+TRIP_TYPE_ID                   NUMBER        
+LANDINGS_TYPE_ID               NUMBER        
+TOTAL_BOATS                    NUMBER        
+DATA_COLLECTOR_ID              NUMBER        
+RNK                            NUMBER        
+IMAGE                          BLOB          
+IMAGE_NAME                     VARCHAR2(128) 
+IMAGE_CONTENT_TYPE             VARCHAR2(128) 
+COMMENTS                       VARCHAR2(500) 
+IS_ACTIVE                      NUMBER        
+TENANT_ID                      NUMBER        
+CREATED_BY                     VARCHAR2(128) 
+CREATED_TIME                   TIMESTAMP(6)  
+UPDATED_BY                     VARCHAR2(128) 
+UPDATED_TIME                   TIMESTAMP(6)  
+WF_STATUS_ID                   NUMBER        
+FISHERIES_TYPE_ID              NUMBER

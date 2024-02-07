@@ -1,0 +1,56 @@
+---
+title: "Issues"
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  message = FALSE,
+  warning = FALSE,
+  comment = "#>"
+)
+```
+
+```{r}
+library(fmr)
+library(tidyverse)
+```
+
+```{r, eval = FALSE}
+key <- "your_FM_API_key"
+```
+
+```{r, echo = FALSE, include = FALSE}
+key <- Sys.getenv("fm_key")
+```
+
+## Pending
+
+... no outstanding issues
+
+## Solved
+
+### 2024-02-06 survey$data_collector_id
+
+Where does one find the detailed information about the "survey$data_collector_id.
+
+Get the ids:
+```{r}
+s1 <- fm_survey(key, trim = FALSE)
+s1 |> glimpse()
+collector_id <-
+  s1 |> 
+  pull(data_collector_id) |> 
+  unique()
+collector_id
+```
+
+Try this:
+
+```{r}
+partyD <- fm_tbl("partyD", key)
+partyD |> 
+  filter(party_id %in% collector_id) |> 
+  glimpse()
+```
+

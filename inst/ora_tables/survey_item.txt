@@ -1,0 +1,37 @@
+Name                     Null     Type           
+------------------------ -------- -------------- 
+SURVEY_ITEM_ID           NOT NULL NUMBER         
+SURVEY_ID                         NUMBER         
+DEP_LOCATION_ID                   NUMBER         
+DEP_TIME                          TIMESTAMP(6)   
+DEP_STATUS_ID                     NUMBER         
+ARR_TIME                          TIMESTAMP(6)   
+ARR_STATUS_ID                     NUMBER         
+PLANNED_DESTINATION_ID            NUMBER         
+VESSEL_ID                         NUMBER         
+VESSEL_VERSION                    NUMBER         
+GEAR_ID                           NUMBER         
+GEAR_CLASS_ID                     NUMBER         
+VESSEL_CLASS_ID                   NUMBER         
+CLIMATE_ID                        NUMBER         
+ARR_LOCATION_ID                   NUMBER         
+SURVEY_ITEM_STATUS_ID             NUMBER         
+SURVEY_ITEM_TYPE_ID               NUMBER         
+SECONDARY_GEAR_ID                 NUMBER         
+SECONDARY_VESSEL_ID               NUMBER         
+SECONDARY_VESSEL_VERSION          NUMBER         
+FUEL_USED                         NUMBER         
+INFRACTION_TYPE_ID                NUMBER         
+INFRACTION_DESC                   VARCHAR2(4000) 
+MEASUREMENT_TYPE_ID               NUMBER         
+COMMENTS                          VARCHAR2(4000) 
+RNK                               NUMBER         
+IMAGE                             BLOB           
+IMAGE_CONTENT_TYPE                VARCHAR2(128)  
+IMAGE_NAME                        VARCHAR2(128)  
+TENANT_ID                         NUMBER         
+IS_ACTIVE                         NUMBER         
+CREATED_BY                        VARCHAR2(128)  
+CREATED_TIME                      TIMESTAMP(6)   
+UPDATED_BY                        VARCHAR2(128)  
+UPDATED_TIME                      TIMESTAMP(6)
