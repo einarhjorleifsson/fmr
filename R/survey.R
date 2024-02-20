@@ -61,6 +61,7 @@ fm_survey_api <- function(key) {
 fm_survey <- function(key, std = TRUE, trim = TRUE, remove_empty = TRUE) {
   
   ch <- fm_choice(key)
+  
   party <- 
     fm_tbl("partyD", key) |> 
     tidyr::unite(col = "collector", first_name, middle_name, last_name, sep = " ", na.rm = TRUE) |> 
@@ -77,8 +78,12 @@ fm_survey <- function(key, std = TRUE, trim = TRUE, remove_empty = TRUE) {
     dplyr::left_join(ch |> 
                        dplyr::select(choice_id, status = code),
                      by = dplyr::join_by(survey_status_id == choice_id)) |> 
+    dplyr::left_join(ch |> 
+                       dplyr::select(choice_id, type = code),
+                     by = dplyr::join_by(survey_type_id == choice_id)) |> 
     dplyr::left_join(party,
                      by = dplyr::join_by(data_collector_id))
+  
     
   
   if(std) {
@@ -87,7 +92,7 @@ fm_survey <- function(key, std = TRUE, trim = TRUE, remove_empty = TRUE) {
       d |> 
       dplyr::rename(dplyr::any_of(vocabulary)) |> 
       dplyr::select(site, island, status, date, T1, T2, 
-                    total_boats, comment,
+                    total_boats, comment, type,
                     collector,
                     .cn, .ct, .un, .ut, .s1, 
                     dplyr::everything()) |> 

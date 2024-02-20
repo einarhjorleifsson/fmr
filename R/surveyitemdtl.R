@@ -55,17 +55,42 @@ fm_surveyitemdtl_api <- function(key) {
 #' @export
 fm_surveyitemdtl <- function(key, std = TRUE, trim = TRUE, remove_empty = TRUE) {
   
+  ch <- 
+    fm_choice(key) |> 
+    filter(table == "survey_item_dtl")
+  
+  fz <- 
+    fishing_zone |> 
+    dplyr::rename(fz = area) |> 
+    dplyr::left_join(fm_tbl("locationD", key) |> dplyr::rename(fz = location),
+                     by = dplyr::join_by(fz)) |> 
+    dplyr::select(fz, lon, lat, fishing_zone_id = location_id)
+  
   d <- 
-    fmr:::fm_surveyitemdtl_api(key) |> 
+    fm_surveyitemdtl_api(key) |> 
     # should be removed downstream
     janitor::remove_empty(which = "cols") |> 
+    dplyr::left_join(ch |> 
+                dplyr::filter(variable == "measurement_type_id") |> 
+                dplyr::select(measurement_type_id = choice_id,
+                              measurement_type = code),
+                by = dplyr::join_by(measurement_type_id)) |> 
+    dplyr::left_join(fz,
+                     by = dplyr::join_by(fishing_zone_id))
+  d <- 
+    d |> 
     # anything to do with gear first - guess could be thought of as "synis_id"
     dplyr::select(gear_id, gear_size, no_of_sets, soak_time,
                   depth_min, depth_max, 
                   no_of_gears,
-                  fishing_zone_id,
-                  measurement_type_id,
-                  termination_reason_id,
+                  fz,
+                  lon,
+                  lat,
+                  measurement_type,
+                  created_by,
+                  created_date,
+                  last_modified_by,
+                  last_modified_date,
                   survey_item_id,
                   survey_item_dtl_id,
                   dplyr::everything())

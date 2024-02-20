@@ -16,8 +16,7 @@ fm_grid_calendar <- function(d) {
                   .week = lubridate::week(date),
                   .month = lubridate::month(date, label = TRUE, abbr = FALSE, locale = "en_GB.utf8"),
                   .day = lubridate::day(date)) |> 
-    dplyr::left_join(d) |> 
-    dplyr::mutate(survey = tidyr::replace_na(survey, FALSE))
+    dplyr::left_join(d)
   levels(g$.wday) <- c("Mo", "Tu", "We", "Th", "Fr", "Sa", "Su")
   
   return(g)

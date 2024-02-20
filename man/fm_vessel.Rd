@@ -9,8 +9,8 @@ fm_vessel(
   std = TRUE,
   trim = TRUE,
   remove_empty = TRUE,
-  owner = FALSE,
-  operator = FALSE
+  add_owner = FALSE,
+  add_operator = FALSE
 )
 
 fm_vessel(
@@ -18,8 +18,8 @@ fm_vessel(
   std = TRUE,
   trim = TRUE,
   remove_empty = TRUE,
-  owner = FALSE,
-  operator = FALSE
+  add_owner = FALSE,
+  add_operator = FALSE
 )
 }
 \arguments{
@@ -34,10 +34,10 @@ are returned. Only active if arguement std is set to TRUE.}
 \item{remove_empty}{boolean, if TRUE (default) drops variables composed
 entirely of NA values}
 
-\item{owner}{boolean, if TRUE adds owner name (first, middle and last name)
+\item{add_owner}{boolean, if TRUE (default) adds owner name (first, middle and last name)
 as a single string}
 
-\item{operator}{boolean, if TRUE adds operator name (first, middle and last
+\item{add_operator}{boolean, if TRUE (default) adds operator name (first, middle and last
 name) as a single string}
 }
 \value{
