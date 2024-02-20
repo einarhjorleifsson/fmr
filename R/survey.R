@@ -12,7 +12,7 @@
 #'
 #' @return a tibble
 fm_survey_api <- function(key) {
-  fm_tbl(table = "survey") |> 
+  fm_tbl(key, table = "survey") |> 
     dplyr::mutate(dplyr::across(c(dplyr::ends_with("_id"),
                                   total_boats,
                                   rank,

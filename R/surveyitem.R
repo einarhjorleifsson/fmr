@@ -10,7 +10,7 @@
 #' @return a tibble
 fm_surveyitem_api <- function(key) {
   d <- 
-    fm_tbl(table = "surveyItem", key) |> 
+    fm_tbl("surveyItem", key) |> 
     dplyr::mutate(dplyr::across(c(dplyr::ends_with("_id"),
                                   fuel_used,
                                   rank), 
