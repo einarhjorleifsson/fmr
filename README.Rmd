@@ -40,7 +40,7 @@ key <- "your_FM_API_key"
 ```
 
 ```{r, echo = FALSE, include = FALSE}
-key <- Sys.getenv("fm_key")
+key <- "4b4dfa960222d91308f4b2707d52610a"
 ```
 
 ```{r}

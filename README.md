@@ -31,7 +31,7 @@ key <- "your_FM_API_key"
 
 ``` r
 fm_survey(key) |> glimpse()
-#> Rows: 2,343
+#> Rows: 2,433
 #> Columns: 15
 #> $ site        <chr> "Basseterre West", "Sandy Point Bay", "Basseterre East", "…
 #> $ island      <chr> "Saint Kitts", "Saint Kitts", "Saint Kitts", "Saint Kitts"…

@@ -88,3 +88,25 @@ v <-
 vocabulary <- stats::setNames(object = v$fm_variable, nm = v$fmr_variable)
 
 usethis::use_data(vocabulary, overwrite = TRUE)
+
+# St. Kitt's and Nevis fishing grounds -----------------------------------------
+x1 <- -63.04    # Central points for I1
+y1 <-  16.90    #
+
+x <- x1 + 0:9 * 0.08
+y <- y1 + 0:8 * 0.08
+g <- 
+  expand_grid(lon = x,
+              lat = y) |> 
+  arrange(desc(lat), lon)
+a <- 
+  expand_grid(l = LETTERS[1:9],
+              n = 1:10) |> 
+  unite("area", l, n, sep = "", remove = FALSE)
+fishing_zone <- 
+  g |> 
+  mutate(area = a$area) |> 
+  select(area, lon, lat) |> 
+  mutate(tenant = 103)
+
+usethis::use_data(fishing_zone, overwrite = TRUE)
