@@ -60,7 +60,7 @@ fm_vessel <- function(key) {
 #'
 fm_vessel <- function(key, std = TRUE, trim = TRUE, remove_empty = TRUE, add_owner = FALSE, add_operator = FALSE) {
   
-  d <- fm_vesselF()
+  d <- fm_vesselF(key)
   
   if(std) {
     d <- 
