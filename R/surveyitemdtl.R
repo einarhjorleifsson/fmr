@@ -87,12 +87,12 @@ fm_surveyitemdtl <- function(key, std = TRUE, trim = TRUE, remove_empty = TRUE) 
                   lon,
                   lat,
                   measurement_type,
+                  survey_item_id,
+                  survey_item_dtl_id,
                   created_by,
                   created_date,
                   last_modified_by,
                   last_modified_date,
-                  survey_item_id,
-                  survey_item_dtl_id,
                   dplyr::everything())
   
   if(std) {
@@ -104,7 +104,7 @@ fm_surveyitemdtl <- function(key, std = TRUE, trim = TRUE, remove_empty = TRUE) 
     if(FALSE) {
       d <-
         d |> 
-        dplyr::select(gear_id:.s3)
+        dplyr::select(gear_id:survey_item_dtl_id)
     }
   }
   

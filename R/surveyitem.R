@@ -64,9 +64,9 @@ fm_surveyitem <- function(key, std = TRUE, trim = TRUE, remove_empty = TRUE) {
                   gear_id,
                   dep_time, arr_time, fuel_used, comment,
                   site1, site2,
+                  survey_item_id, survey_id,
                   created_by, created_date,
                   last_modified_by, last_modified_date,
-                  survey_item_id, survey_id,
                   dplyr::everything())
   
   if(std) {
@@ -78,7 +78,7 @@ fm_surveyitem <- function(key, std = TRUE, trim = TRUE, remove_empty = TRUE) {
     if(trim) {
       d <-
         d |> 
-        dplyr::select(vid:.s1)
+        dplyr::select(vid:survey_id)
     }
   }
   

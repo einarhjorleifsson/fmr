@@ -94,14 +94,15 @@ fm_survey <- function(key, std = TRUE, trim = TRUE, remove_empty = TRUE) {
       dplyr::select(site, island, status, date, T1, T2, 
                     total_boats, comment, type,
                     collector,
-                    .cn, .ct, .un, .ut, .s1, 
+                    survey_id,
+                    .cn, .ct, .un, .ut, 
                     dplyr::everything()) |> 
       dplyr::mutate(date = lubridate::as_date(date))
     
     if(trim) {
       d <-
         d |> 
-        dplyr::select(site:.s1)
+        dplyr::select(site:survey_id)
     }
   }
   
