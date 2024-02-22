@@ -92,9 +92,10 @@ fm_survey <- function(key, std = TRUE, trim = TRUE, remove_empty = TRUE) {
       d |> 
       dplyr::rename(dplyr::any_of(vocabulary)) |> 
       dplyr::select(site, island, status, date, T1, T2, 
-                    total_boats, comment, type,
+                    total_boats, type,
                     collector,
                     survey_id,
+                    comment, 
                     .cn, .ct, .un, .ut, 
                     dplyr::everything()) |> 
       dplyr::mutate(date = lubridate::as_date(date))

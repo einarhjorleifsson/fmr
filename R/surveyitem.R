@@ -62,9 +62,10 @@ fm_surveyitem <- function(key, std = TRUE, trim = TRUE, remove_empty = TRUE) {
                      by = dplyr::join_by(arr_location_id)) |> 
     dplyr::select(vessel_id, vessel_name, registration_no,
                   gear_id,
-                  dep_time, arr_time, fuel_used, comment,
+                  dep_time, arr_time, fuel_used, 
                   site1, site2,
                   survey_item_id, survey_id,
+                  comment,
                   created_by, created_date,
                   last_modified_by, last_modified_date,
                   dplyr::everything())
