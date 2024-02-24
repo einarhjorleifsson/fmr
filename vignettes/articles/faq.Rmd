@@ -1,0 +1,26 @@
+---
+title: "FAQ"
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  message = FALSE,
+  warning = FALSE,
+  comment = "#>"
+)
+```
+
+```{r}
+library(fmr)
+library(tidyverse)
+```
+
+```{r, eval = FALSE}
+key <- "your_FM_API_key"
+```
+
+```{r, echo = FALSE}
+key <- Sys.getenv("fm_key")
+```
+

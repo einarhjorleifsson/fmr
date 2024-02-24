@@ -1,0 +1,85 @@
+---
+title: "QC report"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+```
+
+```{r}
+# PUT THE YEAR AND THE MONTH YOU WANT TO DO QC
+YEAR  <- 2024
+MONTH <- 2
+```
+
+```{r}
+library(fmr)
+library(tidyverse)
+key <- "Your FM API key"
+```
+
+```{r, echo = FALSE}
+key <- Sys.getenv("fm_key")
+```
+
+## Preamble
+
+This document is currently a combination of notes and some ad-hoc code associated with quality control. In the end we expect to have a more succinct document that only deals with the quality control.
+
+## The survey table
+
+We (I) expect that the information in the survey table is refecting information about the whereabout and time that an observer was surveying.
+
+```{r}
+survey <- 
+  # want all the columns here, hence trim FALSE
+  fmr::fm_survey(key, trim = FALSE) |> 
+  filter(year(date) == YEAR,
+         month(date) == MONTH)
+```
+
+### We do expect survey's to start and end within the same date
+
+```{r}
+survey |> 
+  filter(date(T1) != date(T2)) |> 
+  select(site, date, survey_id, status, collector, T1, T2) |> 
+  arrange(site, date, collector) |> 
+  knitr::kable()
+```
+
+### We do not expect survey's being done on a Saturday or Sunday
+
+```{r}
+survey |> 
+  mutate(wday = wday(date, label = TRUE, locale = "en_GB.utf8", week_start = 1)) |> 
+  filter(wday %in% c("Sat", "Sun")) |> 
+  select(site, date, wday, survey_id, status, collector) |> 
+  arrange(site, date, collector) |> 
+  knitr::kable()
+```
+
+### We do not expect more than one survey entry per observer per sampling day
+
+```{r}
+d <- 
+  survey |> 
+  group_by(site, date, collector) |> 
+  summarise(n = n(),
+            .groups = "drop")
+# List of sites, date and collector with more than one survey id
+d |> 
+  filter(n > 1) |> 
+  knitr::kable(caption = "Number of distinct survey_id's by site, date and collector")
+# Get a list of the survey id's behind these records
+d |> 
+  filter(n > 1) |> 
+  left_join(survey) |> 
+  select(site:n, survey_id, status, T1, T2) |> 
+  knitr::kable(caption = "List of survey_id's")
+```
+
+NOTE: Ideally we would like to have one survey_id per landing site irrespective of the number of surveyor's. I guess in order to do achieve that one need to setup the anticipated survey date beforehand and then each of the observers log into that same survey_id.
+

@@ -14,6 +14,11 @@ knitr::opts_chunk$set(
 ```{r}
 library(fmr)
 library(tidyverse)
+key <- "your_FM_API_key"
+```
+
+```{r, echo = FALSE}
+key <- Sys.getenv("fm_key")
 ```
 
 ## Preamble
@@ -23,7 +28,7 @@ This document is just to explore the FM data model, done to prevent any misunder
 ## Site
 
 ```{r}
-fmr:::fm_site(trim = FALSE) |> glimpse()
+fmr:::fm_site(key, trim = FALSE) |> glimpse()
 ```
 
 ## Vessel
@@ -31,9 +36,9 @@ fmr:::fm_site(trim = FALSE) |> glimpse()
 The vessel registry can be accessed in three ways:
 
 ```{r}
-vf <- fm_vesselF()
-vd <- fm_vesselD()
-v  <- fm_vessel(owner = TRUE, operator = TRUE)
+vf <- fm_vesselF(key)
+vd <- fm_vesselD(key)
+v  <- fm_vessel(key, add_owner = TRUE, add_operator = TRUE)
 v |> glimpse()
 ```
 
@@ -41,13 +46,13 @@ v |> glimpse()
 ### vesselF
 
 ```{r}
-fmr:::fm_vesselF() |> glimpse()
+fmr:::fm_vesselF(key) |> glimpse()
 ```
 
 ### vesselD
 
 ```{r}
-fmr:::fm_vesselD() |> glimpse()
+fmr:::fm_vesselD(key) |> glimpse()
 ```
 
 ## licence
@@ -55,13 +60,13 @@ fmr:::fm_vesselD() |> glimpse()
 ### licenceF
 
 ```{r}
-fmr:::fm_licenseF() |> glimpse()
+fmr:::fm_licenseF(key) |> glimpse()
 ```
 
 ### licenceV
 
 ```{r}
-fmr:::fm_licenseV() |> glimpse()
+fmr:::fm_licenseV(key) |> glimpse()
 ```
 
 ## party
@@ -70,7 +75,7 @@ fmr:::fm_licenseV() |> glimpse()
 ### partyV
 
 ```{r}
-fmr:::fm_partyV() |> glimpse()
+fmr:::fm_partyV(key) |> glimpse()
 ```
 
 ## choice
@@ -78,6 +83,6 @@ fmr:::fm_partyV() |> glimpse()
 ### choiceD
 
 ```{r}
-#fmr:::fm_choice() |> glimpse()
+fmr:::fm_choice(key) |> glimpse()
 ```
 

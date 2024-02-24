@@ -1,5 +1,5 @@
 ---
-title: "The data model"
+title: "EDA"
 ---
 
 ```{r, include = FALSE}
@@ -57,7 +57,15 @@ key <- Sys.getenv("fm_key")
 Let's start by loading in tables needed, if only because we need information from the downstream tables to make sense of the upstream tables:
 
 ```{r}
-s1 <- fm_survey(key, trim = FALSE)
+fm_survey(key) |> glimpse()
+
+
+
+s1 <- fm_survey(key)
+
+
+fm_survey
+
 s2 <- fm_surveyitem(key)
 s3 <- fm_surveyitemdtl(key)
 ```
@@ -83,7 +91,7 @@ d <-
          site == "Basseterre East") |>
   arrange(date) |> 
   group_by(site, date) |> 
-  summarise(n = n_distinct(survey_id),
+  summarise(n = n_distinct(.s1),
             .groups = "drop")
 d |> 
   knitr::kable(caption = "Number of surveys per date")
@@ -142,14 +150,41 @@ d <-
          site == "Basseterre East") |> 
   mutate(wday = wday(date, label = TRUE, locale = "en_GB.utf8")) |> 
   filter(wday %in% c("Sat", "Sun")) |> 
-  count(survey_id, date, wday) |> 
-  arrange(date)
+  count(.s1, date, .cn, .ct, .un, .ut) |> 
+  arrange(date, .ct)
 d
 ```
 
 Here we see that we have:
 
 * 3 survey weekdays
+* In each case the creation date (.ct) is not the same as the survey date
+* On one date (2024-01-07) we have two persons creating a survey on two separated dates
+
+The most likely explanation is that these surveys are actually informations obtained from the fishermen and that the survey date was set the same as the fishing day. To check this we need to dig into downstream tables:
+
+```{r}
+s1 |> 
+  filter(.s1 %in% d$.s1) |> 
+  select(.s1, date, .ct, .cn) |> 
+  left_join(s2 |> select(vessel, regno, t1, t2, .s1, .s2)) |> 
+  left_join(s3 |> select(.s2, type = measurement_type) |> distinct()) |>  
+  arrange(date, .cn) |> 
+  knitr::kable()
+```
+
+Here one observes the measurement type is in two cases FE () but unexpectedly WT () in three cases. The table above gives rise to three QC points:
+
+```
+QC01: If fishing on weekend should one not expect that the measurement_type is FE
+QC02: Should one expect that one can only have one record (trip) per vessel per fishing day
+      Related, one can not have overlapping trip time (t1 to t2) for the same vessel
+QC03: Should one exepect that fishing period is more than ~1 day, i.e. are there multi-day-trips
+      Would this depend on gear type
+```
+
+
+
 
 
 
@@ -158,11 +193,11 @@ Ad hoc question:
 
 ```{r}
 s1 |> 
-  select(survey_id, date, .cn, .ct) |> 
+  select(.s1, date, .cn, .ct) |> 
   filter(year(date) == 2024) |> 
-  inner_join(s2 |> select(vid, survey_id, survey_item_id, dep_time, arr_time)) |> 
-  inner_join(s3 |> select(survey_item_id, type = measurement_type) |> distinct()) |> 
-  select(vid, date, type, dep_time, arr_time, everything()) |> 
+  inner_join(s2 |> select(vid, .s1, .s2, t1, t2)) |> 
+  inner_join(s3 |> select(.s2, type = measurement_type) |> distinct()) |> 
+  select(vid, date, type, t1, t2, everything()) |> 
   arrange(vid, date, type) |> 
   group_by(vid, date, type) |> 
   mutate(n = n(), .after = type) |> 
@@ -186,7 +221,7 @@ s1 <-
   select(-.rowid)
 s1 |> 
   summarise(n_sid = n_distinct(.sid),
-            n_surveyid = n_distinct(survey_id),
+            n_surveyid = n_distinct(.s1),
             .groups = "drop")
 ```
 
