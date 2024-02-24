@@ -6,7 +6,7 @@
 #' @return a tibble
 #' @export
 #'
-fm_tbl <- function(table = "siteD", key) {
+fm_tbl <- function(table = "siteD", key, clean = TRUE) {
   
   if(missing(key)) key <- Sys.getenv("fm_key")
   
@@ -17,8 +17,13 @@ fm_tbl <- function(table = "siteD", key) {
            key)
   d <- 
     jsonlite::fromJSON(url)$result |> 
-    tibble::as_tibble() |> 
-    janitor::clean_names()
+    tibble::as_tibble()
+  
+  if(clean) {
+    d <- 
+      d |> 
+      janitor::clean_names()
+  }
   
   return(d)
   
