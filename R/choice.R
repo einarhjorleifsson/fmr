@@ -13,7 +13,7 @@ fm_choice <- function(key, std = TRUE) {
     fm_tbl(table = "choiceD", key) |> 
     dplyr::mutate(table_name = stringr::str_to_lower(table_name),
                   column_name = stringr::str_to_lower(column_name)) |> 
-    arrange(table_name, column_name)
+    dplyr::arrange(table_name, column_name)
   if(std) {
     d <- 
       d |> 

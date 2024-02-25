@@ -10,6 +10,8 @@ fm_tbl(table = "siteD", key, clean = TRUE)
 \item{table}{string, see what is currently available at: https://fimsehf.atlassian.net/wiki/spaces/FT/pages/3255894017/.REST+API+for+reporting+endpoint}
 
 \item{key}{string}
+
+\item{clean}{boolean (default TRUE) indicating if variable names should be by janitor-convention.}
 }
 \value{
 a tibble

@@ -7,7 +7,7 @@
 fm_datadump(key, pth = "dump")
 }
 \arguments{
-\item{key}{}
+\item{key}{your FM API key}
 
 \item{pth}{vector specifying path to were the data is to be stored}
 }
