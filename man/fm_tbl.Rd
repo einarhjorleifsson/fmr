@@ -4,7 +4,7 @@
 \alias{fm_tbl}
 \title{Fisheries manager table connection}
 \usage{
-fm_tbl(table = "siteD", key)
+fm_tbl(table = "siteD", key, clean = TRUE)
 }
 \arguments{
 \item{table}{string, see what is currently available at: https://fimsehf.atlassian.net/wiki/spaces/FT/pages/3255894017/.REST+API+for+reporting+endpoint}

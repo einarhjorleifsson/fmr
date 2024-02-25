@@ -28,7 +28,7 @@ The FM API on is made up from three tables ([The Data Structured Explained](http
 
 The conceptual design (if one is considering catch-sampling on landing sites) is depicted as:
 
-```{r, echo = FALSE}
+```{r, echo = FALSE, eval = FALSE}
 #| fig.cap: "Source: Fisheries Technologies."
 knitr::include_graphics(here::here("vignettes/articles/data_model1.png"))
 ```
@@ -236,10 +236,10 @@ Do not expect that one can create a survey without a survey date:
 ```{r}
 s1 |> 
   filter(is.na(date)) |> 
-  select(.s1, site, date, status, T1, T2, n_boats = total_boats, comment,
+  select(survey_id, site, date, status, T1, T2, n_boats = total_boats, comment,
          collector,
          .cn:.ut) |> 
-  arrange(.s1) |> 
+  arrange(survey_id) |> 
   glimpse()
 ```
 
@@ -253,8 +253,8 @@ QC: Expect only one trip per vessel per day
 
 ```{r}
 s2 |> 
-  mutate(d1 = as_date(t1),
-         d2 = as_date(t2)) |> 
+  mutate(d1 = as_date(dep_time),
+         d2 = as_date(arr_time)) |> 
   count(vid, d1) |> 
   count(n) |> 
   rename('Trips per day' = n, 
@@ -262,10 +262,6 @@ s2 |>
   knitr::kable(caption = "Number of trips by vessels per day")
 ```
 
-```{r}
-s2 |> 
-  mutate(d1 = as_date(t1))
-```
 
 ### The surveyitemdtl table
 
