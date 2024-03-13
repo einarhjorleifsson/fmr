@@ -1,0 +1,84 @@
+---
+title: "To whom it may concern"
+author: "Your Name"
+date: "The Date"
+output:
+  pdf_document: default
+params:
+  OPERATOR: "Joel Tejeda"
+  PERIOD_FROM: 2024-01-01
+  PERIOD_TO: 2024-01-31  
+---
+
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
+```
+
+
+```{r}
+library(tidyverse)
+library(fmr)
+key <- Sys.getenv("fm_key")
+trip <- fmr::fm_trip(key)
+d <- 
+  trip |> 
+  dplyr::filter(operator == params$OPERATOR,
+                dplyr::between(arr_time, 
+                        lubridate::ymd(params$PERIOD_FROM), 
+                        lubridate::ymd(params$PERIOD_TO)))
+
+```
+
+
+
+
+
+
+
+
+**Bank Name**: XXXX
+
+**Bank Address**: XXX
+
+
+**Subject**: Request for Loan Consideration for Name of Vessel Fishing Operation.
+
+
+
+
+Dear Sir/Madam
+
+
+
+I write one behalf of `r params$OPERATOR`, a dedicated and hardworking fisher who operates the fishing vessel named `r unique(d$vessel)`. `r params$OPERATOR` has been an integral part of the fishing community, contributing significantly to the local economy through sustainable fishing practices.
+
+
+Enclosed, please find a summary table detailing recent fishing activities  for the period `r params$PERIOD_FROM` to  `r params$PERIOD_TO`:
+
+
+
+```{r}
+d |> 
+  left_join(fmr::fm_catch(key)) |> 
+  mutate(Year = year(arr_time),
+         `Week number`  = week(arr_time)) |> 
+  group_by(Year, `Week number`) |> 
+  dplyr::reframe(`Number of trips` = n_distinct(trip_id),
+                 `Catch [lb]` = sum(weight)) |> 
+  knitr::kable()
+```
+
+
+Thank you for considering this request. We look forward to the possibility of working together to support Owner's Name in continuing their valuable contribution to the fishing community.
+
+Yours faithfully 
+
+
+
+
+Randel Thompson
+
+Director
+
+

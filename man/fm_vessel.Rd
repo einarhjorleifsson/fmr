@@ -2,17 +2,8 @@
 % Please edit documentation in R/vessel.R
 \name{fm_vessel}
 \alias{fm_vessel}
-\title{Vessel table}
+\title{Vessel informations}
 \usage{
-fm_vessel(
-  key,
-  std = TRUE,
-  trim = TRUE,
-  remove_empty = TRUE,
-  add_owner = FALSE,
-  add_operator = FALSE
-)
-
 fm_vessel(
   key,
   std = TRUE,
@@ -42,9 +33,7 @@ name) as a single string}
 }
 \value{
 a tibble
-
-a tibble
 }
 \description{
-For the time being simple, only 3 variables returned
+Vessel informations
 }

@@ -2,20 +2,31 @@
 % Please edit documentation in R/surveyitem.R
 \name{fm_trip}
 \alias{fm_trip}
-\title{A trip table}
+\title{The surveyitem table}
+\format{
+A data frame with these variables if using default arguements:
+\describe{
+\item{\code{xxx}}{yyy}
+}
+}
 \usage{
-fm_trip(key)
+fm_trip(key, std = TRUE, trim = TRUE, remove_empty = TRUE)
 }
 \arguments{
 \item{key}{your FM API key}
+
+\item{std}{boolean, if TRUE (default) variables are renamed according to
+{fmr} convention}
+
+\item{trim}{boolean, if TRUE (default) only essential (standard) variables
+are returned. Only active if arguement std is set to TRUE.}
+
+\item{remove_empty}{boolean, if TRUE (default) remove variables whose values
+are all NA's}
 }
 \value{
 a tibble
 }
 \description{
-A trip table
-}
-\note{
-For now same as fm_surveytable with default arguments. In future will
-most likely need a filter using one of the _id, _class or _category
+The function returns information about each ...
 }
