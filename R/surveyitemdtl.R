@@ -53,7 +53,7 @@ fm_surveyitemdtl_api <- function(key) {
 #' }
 #' 
 #' @export
-fm_surveyitemdtl <- function(key, std = TRUE, trim = TRUE, remove_empty = TRUE) {
+fm_catch <- function(key, std = TRUE, trim = TRUE, remove_empty = TRUE) {
   
   ch <- 
     fm_choice(key) |> 
@@ -116,4 +116,3 @@ fm_surveyitemdtl <- function(key, std = TRUE, trim = TRUE, remove_empty = TRUE) 
   return(d)
   
 }
-

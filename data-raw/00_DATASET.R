@@ -25,7 +25,7 @@ specs_survey_item <-
   slice(-c(1:2)) |> 
   mutate(v = tolower(name), .before = name) |> 
   mutate(table = "survey_item", .before = v) |> 
-  mutate(fmr_variable = case_when(v == "trip_id"  ~ ".s2",
+  mutate(fmr_variable = case_when(v == "survey_item_id"  ~ "trip_id",
                                   #v == "survey_id"       ~ ".s1",
                                   v == "dep_location_id" ~ "hid1",
                                   #v == "dep_time"        ~ "t1",
@@ -52,7 +52,7 @@ specs_survey_item_dtl <-
   mutate(v = tolower(name), .before = name) |> 
   mutate(table = "survey_item_dtl", .before = v) |> 
   mutate(fmr_variable = case_when(v == "survey_item_dtl_id" ~ ".s3",
-                                  #v == "survey_item_id"     ~ ".s2",
+                                  v == "survey_item_id"     ~ "trip_id",
                                   
                                   v == "created_by"      ~ ".cn",
                                   v == "created_time"    ~ ".ct",

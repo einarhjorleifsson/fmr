@@ -44,23 +44,29 @@ fm_surveyitem_api <- function(key) {
 #' }
 #' 
 #' @export
-fm_surveyitem <- function(key, std = TRUE, trim = TRUE, remove_empty = TRUE) {
+fm_trip <- function(key, std = TRUE, trim = TRUE, remove_empty = TRUE) {
   
   site <- 
-    fm_site(key) |> 
+    fm_site(key = key) |> 
     dplyr::select(party_id, site)
+  vessel <- 
+    fm_vessel(key = key, std = FALSE, add_owner = TRUE, add_operator = TRUE) |> 
+    dplyr::select(vessel_id,
+                  vessel_name,
+                  registration_no,
+                  owner,
+                  operator)
+  
   d <- 
     fm_surveyitem_api(key) |> 
-    dplyr::left_join(fm_vesselD(key) |> 
-                       dplyr::select(vessel_id,
-                                     vessel_name,
-                                     registration_no),
+    dplyr::left_join(vessel,
                      by = dplyr::join_by(vessel_id)) |> 
     dplyr::left_join(site |> dplyr::rename(site1 = site, dep_location_id = party_id),
                      by = dplyr::join_by(dep_location_id)) |> 
     dplyr::left_join(site |> dplyr::rename(site2 = site, arr_location_id = party_id),
                      by = dplyr::join_by(arr_location_id)) |> 
     dplyr::select(vessel_id, vessel_name, registration_no,
+                  owner, operator,
                   gear_id,
                   dep_time, arr_time, fuel_used, 
                   site1, site2,
@@ -90,18 +96,4 @@ fm_surveyitem <- function(key, std = TRUE, trim = TRUE, remove_empty = TRUE) {
   }
   return(d)
   
-}
-
-#' A trip table
-#' 
-#' @note For now same as fm_surveytable with default arguments. In future will
-#' most likely need a filter using one of the _id, _class or _category
-#'
-#' @param key your FM API key
-#'
-#' @return a tibble
-#' @export
-#'
-fm_trip <- function(key) {
-  fm_surveyitem(key)
 }

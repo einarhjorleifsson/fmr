@@ -9,7 +9,8 @@ fm_vesselF <- function(key) {
   fm_tbl(table = "vesselF", key) |> 
     janitor::clean_names() |> 
     dplyr::mutate(registration_date = lubridate::ymd_hms(registration_date),
-                  registration_date = lubridate::as_date(registration_date))
+                  registration_date = lubridate::as_date(registration_date)) |> 
+    dplyr::distinct()
 }
 
 #' Vessel table (vesselD)
@@ -22,23 +23,6 @@ fm_vesselD <- function(key) {
   fm_tbl(table = "vesselD", key) |> 
     janitor::clean_names()
 }
-
-#' Vessel table
-#'
-#' For the time being simple, only 3 variables returned
-#'
-#' @param key your FM API
-#'
-#' @return a tibble
-#' @export
-fm_vessel <- function(key) {
-  # simple for the time being
-  fm_vesselD(key) |> 
-    dplyr::select(vessel_id,
-                  vessel_name,
-                  registration_no)
-}
-
 
 
 #' Vessel informations
@@ -60,7 +44,7 @@ fm_vessel <- function(key) {
 #'
 fm_vessel <- function(key, std = TRUE, trim = TRUE, remove_empty = TRUE, add_owner = FALSE, add_operator = FALSE) {
   
-  d <- fm_vesselF(key)
+  d <- fm_vesselF(key = key)
   
   if(std) {
     d <- 
