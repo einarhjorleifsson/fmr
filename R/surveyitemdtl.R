@@ -57,7 +57,7 @@ fm_surveyitemdtl <- function(key, std = TRUE, trim = TRUE, remove_empty = TRUE) 
   
   ch <- 
     fm_choice(key) |> 
-    filter(table == "survey_item_dtl")
+    dplyr::filter(table == "survey_item_dtl")
   
   fz <- 
     fishing_zone |> 

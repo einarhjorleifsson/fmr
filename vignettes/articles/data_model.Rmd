@@ -28,7 +28,7 @@ The FM API on is made up from three tables ([The Data Structured Explained](http
 
 The conceptual design (if one is considering catch-sampling on landing sites) is depicted as:
 
-```{r, echo = FALSE}
+```{r, echo = FALSE, eval = FALSE}
 #| fig.cap: "Source: Fisheries Technologies."
 knitr::include_graphics(here::here("vignettes/articles/data_model1.png"))
 ```
@@ -41,7 +41,6 @@ The FM 3 table framework is not specific for sampling from landings, but lets he
 
 ## The connection
 
-...
 
 
 ```{r, eval = FALSE}
@@ -266,6 +265,7 @@ s2 |>
 s2 |> 
   mutate(d1 = as_date(dep_time))
 ```
+
 
 ### The surveyitemdtl table
 
