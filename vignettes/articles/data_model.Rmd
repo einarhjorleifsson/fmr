@@ -236,10 +236,10 @@ Do not expect that one can create a survey without a survey date:
 ```{r}
 s1 |> 
   filter(is.na(date)) |> 
-  select(.s1, site, date, status, T1, T2, n_boats = total_boats, comment,
+  select(survey_id, site, date, status, T1, T2, n_boats = total_boats, comment,
          collector,
          .cn:.ut) |> 
-  arrange(.s1) |> 
+  arrange(survey_id) |> 
   glimpse()
 ```
 
@@ -253,8 +253,8 @@ QC: Expect only one trip per vessel per day
 
 ```{r}
 s2 |> 
-  mutate(d1 = as_date(t1),
-         d2 = as_date(t2)) |> 
+  mutate(d1 = as_date(dep_time),
+         d2 = as_date(arr_time)) |> 
   count(vid, d1) |> 
   count(n) |> 
   rename('Trips per day' = n, 
@@ -264,7 +264,7 @@ s2 |>
 
 ```{r}
 s2 |> 
-  mutate(d1 = as_date(t1))
+  mutate(d1 = as_date(dep_time))
 ```
 
 ### The surveyitemdtl table
@@ -297,4 +297,84 @@ fm_landingF(key) |> glimpse()
 ```{r}
 fm_landingV(key) |> glimpse()
 ```
+
+## What is in common with all fisheries and fisheries science data-collection
+
+### Top-down thinking
+
+#### H1 - survey
+
+1. We go on a **trip**:
+  * This could be a trip to a landing site
+  * This could be a scientific survey ("a cruise"/"leiðangur")
+  * This could be a commercial fishing trip
+  
+```
+We normally would record at minimum time and space at different degree of resolution
+  time: quarter, month, date, time, start, end, ...
+  space: fao area, eez, area, statistical rectangle, geograhical name, lon, lat, ...
+
+If a landing survey, the start and end space would normally be the same.
+
+If a scientific cruise or a fishing trip, the start/end space elements may differ. Therein, we may actually have a visit to port, with or without any landing event.
+```
+
+#### H2 - item
+
+2. During a trip we take some **itemized** samples
+  * If a landing "survey", we sample **boats** (read: trips).
+    * The landing survey could be a subsample of trips or a full census (read: all trips).
+      * If subsample of trips, we would still need info on the total effort (in a day-boat system, some estimated of the number of boats that go out. I.e. anything that allows us to raise the sample to a total estimate).
+      * If full census we have the total effort (at least in terms of the number of trips).
+      * Here the sampling space is the same (a landing site) but we may still get more detailed information on time and space. If so that recorded at the next node downstream (see below).
+  * If a scientific survey we take samples at a **station** (space and time)
+  * If a commerical fishing trip we take "samples" at a **station"* (space and time - think captain logbooks)
+  
+```
+Whatever the case at level H2, we would at minimum record time and space
+
+For a landing survey we would record the start and end time of the trip
+
+For logbooks we would record time and space of the tow (whatever resolution)
+
+For a scientific survey we would record time and space of any action on "a station"
+```
+  
+#### H3 - item details
+
+We may do different things at "a station":
+
+* Measure of fish weight/number by species (or species group)
+  * If landings (sample or census): trip weights/numbers by species, possibly split to type (whole, gutted, fillets, breadcrumbs, ...), preservation (none, iced, "krapi", frozen, dried, ...) and estimation type (visual, weighted, ...)
+  * If commercial logbooks - by time and space of fishing
+  * If scientic curse - by time an sace of fishing
+    * If a scientific cruise we may actually not record total number or total weight by species. But that number will/should always be derivable 
+
+
+#### H4 - measurements details
+
+
+
+
+
+## Think from the bottom up - the base is the station
+
+Most likely a scientific survey is the most "complicated" thing when it comes to data structure/parameters collected Lets first start from thinking about resource survey, like the icelandic gillnet survey.
+
+Station here is considered to be a physical entity associated with time, space and/or potentially other physical parameter.
+
+
+We may have:
+
+* **Station** parameters that includes things like:
+  * t1 &  t2: time start and end time at station
+  * lon1, lat1, lon2, lat2: coordinates, start and end
+  * z1 & z2: depth, start and end
+  * bt1 & bt2: bottom temperature, start and end (rarely both)
+  * st1 & st2: surface temperature, start and end (rarely both)
+  * additional oceanographic informations (wind, sky, ocean condition, ice, air-pressure, currents, secci depth, ...)
+
+At each station we may deploy different gear (not limited to fishing gear) - each of the gear is identified by a unique key (lets call it sample_id). A separate sample is created for each gear. In the case of e.g. of a gill-net survey where we have multiple mesh sizes, each synis_id constitutes a different mesh size. In the case of a gear selectivity survey, one synis_id may be for the sample collected in the cod-end of the main trawl, while the other synis_id is reserved for the fish that are collected in the retaining bag (i.e. fish that pass though the mesh of the main gear, but retained by the "backend" gear).
+
+
 

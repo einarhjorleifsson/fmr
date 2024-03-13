@@ -1,12 +1,13 @@
 test_that("rows of survey components should be the same as landingF", {
-  s <- fm_sF()
-  si <- fm_siF()
-  sid <- fm_sidF()
+  key <- "4b4dfa960222d91308f4b2707d52610a"
+  s <- fm_sF(key)
+  si <- fm_siF(key)
+  sid <- fm_sidF(key)
   l <- 
     s |> 
     dplyr::left_join(si) |> 
     dplyr::left_join(sid)
-  l2 <- fm_tbl("landingF")
+  l2 <- fm_tbl("landingF", key)
   expect_equal(nrow(l), nrow(l2))
 })
 

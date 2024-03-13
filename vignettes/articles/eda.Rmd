@@ -7,6 +7,7 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   message = FALSE,
   warning = FALSE,
+  error = TRUE,
   comment = "#>"
 )
 ```
@@ -14,6 +15,7 @@ knitr::opts_chunk$set(
 ```{r}
 library(fmr)
 library(tidyverse)
+library(here)
 ```
 
 ## Preamble
@@ -77,9 +79,9 @@ s3 <- fm_surveyitemdtl(key)
 s1 |> glimpse()
 ```
 
-Each survey is identified by a unique value stored as *.s1* (*survey_id*). Intuitively one expects that each survey id constitutes a unique number for each landing site (*site*) by each sampling day (*date*). This is however not necessarily the case, as demonstrated below.
+Each survey is identified by a unique value stored as *survey_id* (*survey_id*). Intuitively one expects that each survey id constitutes a unique number for each landing site (*site*) by each sampling day (*date*). This is however not necessarily the case, as demonstrated below.
 
-#### What does a single survey_id (.s1) represent?
+#### What does a single survey_id (survey_id) represent?
 
 Let's take a look at one month of data from one site:
 
@@ -87,11 +89,11 @@ Let's take a look at one month of data from one site:
 d <- 
   s1 |> 
   # look at one month
-  filter(year(date) == 2024, month(date) == 1,
+  filter(year(date) == 2024, month(date) == 3,
          site == "Basseterre East") |>
   arrange(date) |> 
   group_by(site, date) |> 
-  summarise(n = n_distinct(.s1),
+  summarise(n = n_distinct(survey_id),
             .groups = "drop")
 d |> 
   knitr::kable(caption = "Number of surveys per date")
@@ -119,7 +121,7 @@ d |>
   scale_colour_manual(values = c("black", "red")) +
   scale_y_reverse(NULL, NULL) +
   labs(x = NULL,
-       title = "January 2024",
+       title = "March 2024",
        caption = "colour: reported sampling day") +
   coord_equal() +
   theme(legend.position = "none",
@@ -146,11 +148,11 @@ Let's look first at the weeend data:
 d <- 
   s1 |> 
   # look at one month
-  filter(year(date) == 2024, month(date) == 1,
+  filter(year(date) == 2024, month(date) == 3,
          site == "Basseterre East") |> 
   mutate(wday = wday(date, label = TRUE, locale = "en_GB.utf8")) |> 
   filter(wday %in% c("Sat", "Sun")) |> 
-  count(.s1, date, .cn, .ct, .un, .ut) |> 
+  count(survey_id, date, .cn, .ct, .un, .ut) |> 
   arrange(date, .ct)
 d
 ```
@@ -165,9 +167,9 @@ The most likely explanation is that these surveys are actually informations obta
 
 ```{r}
 s1 |> 
-  filter(.s1 %in% d$.s1) |> 
-  select(.s1, date, .ct, .cn) |> 
-  left_join(s2 |> select(vessel, regno, t1, t2, .s1, .s2)) |> 
+  filter(survey_id %in% d$survey_id) |> 
+  select(survey_id, date, .ct, .cn) |> 
+  left_join(s2 |> select(vessel, regno, t1, t2, survey_id, .s2)) |> 
   left_join(s3 |> select(.s2, type = measurement_type) |> distinct()) |>  
   arrange(date, .cn) |> 
   knitr::kable()
@@ -193,9 +195,9 @@ Ad hoc question:
 
 ```{r}
 s1 |> 
-  select(.s1, date, .cn, .ct) |> 
+  select(survey_id, date, .cn, .ct) |> 
   filter(year(date) == 2024) |> 
-  inner_join(s2 |> select(vid, .s1, .s2, t1, t2)) |> 
+  inner_join(s2 |> select(vid, survey_id, .s2, t1, t2)) |> 
   inner_join(s3 |> select(.s2, type = measurement_type) |> distinct()) |> 
   select(vid, date, type, t1, t2, everything()) |> 
   arrange(vid, date, type) |> 
@@ -221,7 +223,7 @@ s1 <-
   select(-.rowid)
 s1 |> 
   summarise(n_sid = n_distinct(.sid),
-            n_surveyid = n_distinct(.s1),
+            n_surveyid = n_distinct(survey_id),
             .groups = "drop")
 ```
 
@@ -271,10 +273,10 @@ Do not expect that one can create a survey without a survey date:
 ```{r}
 s1 |> 
   filter(is.na(date)) |> 
-  select(.s1, site, date, status, T1, T2, n_boats = total_boats, comment,
+  select(survey_id, site, date, status, T1, T2, n_boats = total_boats, comment,
          collector,
          .cn:.ut) |> 
-  arrange(.s1) |> 
+  arrange(survey_id) |> 
   glimpse()
 ```
 
