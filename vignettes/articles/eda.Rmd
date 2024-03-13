@@ -59,24 +59,16 @@ key <- Sys.getenv("fm_key")
 Let's start by loading in tables needed, if only because we need information from the downstream tables to make sense of the upstream tables:
 
 ```{r}
-fm_survey(key) |> glimpse()
-
-
-
-s1 <- fm_survey(key)
-
-
-fm_survey
-
-s2 <- fm_surveyitem(key)
-s3 <- fm_surveyitemdtl(key)
+survey <- fm_survey(key)
+trip <- fm_surveyitem(key)
+catch <- fm_surveyitemdtl(key)
 ```
 
 
 ### The landing site-date table (Survey table)
 
 ```{r}
-s1 |> glimpse()
+survey |> glimpse()
 ```
 
 Each survey is identified by a unique value stored as *survey_id* (*survey_id*). Intuitively one expects that each survey id constitutes a unique number for each landing site (*site*) by each sampling day (*date*). This is however not necessarily the case, as demonstrated below.
@@ -87,9 +79,9 @@ Let's take a look at one month of data from one site:
 
 ```{r}
 d <- 
-  s1 |> 
+  survey |> 
   # look at one month
-  filter(year(date) == 2024, month(date) == 3,
+  filter(year(date) == 2024, month(date) == 1,
          site == "Basseterre East") |>
   arrange(date) |> 
   group_by(site, date) |> 
@@ -122,7 +114,7 @@ d |>
   scale_y_reverse(NULL, NULL) +
   labs(x = NULL,
        title = "March 2024",
-       caption = "colour: reported sampling day") +
+       caption = "Colour: pink - reported sampling day, blue - number of surveys") +
   coord_equal() +
   theme(legend.position = "none",
         legend.title=element_blank(), 
@@ -145,10 +137,12 @@ Here the pink shade marks days that surveys were conducted and the blue colour r
 Let's look first at the weeend data:
 
 ```{r}
+# need to get the data again, now all variables
+survey <- fm_survey(key, trim = FALSE)
 d <- 
-  s1 |> 
+  survey |> 
   # look at one month
-  filter(year(date) == 2024, month(date) == 3,
+  filter(year(date) == 2024, month(date) == 1,
          site == "Basseterre East") |> 
   mutate(wday = wday(date, label = TRUE, locale = "en_GB.utf8")) |> 
   filter(wday %in% c("Sat", "Sun")) |> 
@@ -166,11 +160,11 @@ Here we see that we have:
 The most likely explanation is that these surveys are actually informations obtained from the fishermen and that the survey date was set the same as the fishing day. To check this we need to dig into downstream tables:
 
 ```{r}
-s1 |> 
+survey |> 
   filter(survey_id %in% d$survey_id) |> 
   select(survey_id, date, .ct, .cn) |> 
-  left_join(s2 |> select(vessel, regno, t1, t2, survey_id, .s2)) |> 
-  left_join(s3 |> select(.s2, type = measurement_type) |> distinct()) |>  
+  left_join(trip |> select(vessel, regno, t1, t2, survey_id, .s2)) |> 
+  left_join(catch |> select(.s2, type = measurement_type) |> distinct()) |>  
   arrange(date, .cn) |> 
   knitr::kable()
 ```

@@ -70,7 +70,7 @@ d |>
 ```
 
 
-Thank you for considering this request. We look forward to the possibility of working together to support Owner's Name in continuing their valuable contribution to the fishing community.
+Thank you for considering this request. We look forward to the possibility of working together to support `r params$OPERATOR` and his crew in continuing their valuable contribution to the fishing community.
 
 Yours faithfully 
 
