@@ -79,7 +79,7 @@ fm_catch <- function(key, std = TRUE, trim = TRUE, remove_empty = TRUE) {
                               measurement_type = code),
                 by = dplyr::join_by(measurement_type_id)) |> 
     dplyr::left_join(fz,
-                     by = dplyr::join_by(fishing_zone_id)) %>% 
+                     by = dplyr::join_by(fishing_zone_id)) |> 
     dplyr::left_join(sp,
                      by = dplyr::join_by(species_id))
   d <- 

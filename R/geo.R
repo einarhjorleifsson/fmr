@@ -1,26 +1,13 @@
-#' Location table
+#' Get GADM shapefile for a country
 #'
-#' @param key your FT API key
+#' @param country_code country 3 letter ISO code
 #'
-#' @return A tibble
-fm_location <- function(key) {
-  fm_tbl("locationD", key) |> 
-    dplyr::select(location_id, location, tenant_id)
-}
-
-
-#' Coordinates of fishing zones
-#' 
-#' Specific for St. Kitt's and Nevis
+#' @return a tiblle
+#' @export
 #'
-#' @param key you FT API key
-#'
-#' @return a tibble
-fm_location_knr <- function(key) {
-  
-  fm_location(key) |> 
-    dplyr::left_join(fishing_zone |> 
-                       dplyr::select(location = area, lon, lat)) |> 
-    dplyr::select(-is_active)
-  
+fm_read_country <- function(country_code = "KNA") { 
+  pth <- paste0("https://geodata.ucdavis.edu/gadm/gadm4.1/gpkg/gadm41_",
+                country_code,
+                ".gpkg")
+  suppressWarnings(sf::read_sf(pth))
 }
