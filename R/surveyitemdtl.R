@@ -55,6 +55,9 @@ fm_surveyitemdtl_api <- function(key) {
 #' @export
 fm_catch <- function(key, std = TRUE, trim = TRUE, remove_empty = TRUE) {
   
+  sp <- 
+    fm_species(key)
+  
   ch <- 
     fm_choice(key) |> 
     dplyr::filter(table == "survey_item_dtl")
@@ -76,7 +79,9 @@ fm_catch <- function(key, std = TRUE, trim = TRUE, remove_empty = TRUE) {
                               measurement_type = code),
                 by = dplyr::join_by(measurement_type_id)) |> 
     dplyr::left_join(fz,
-                     by = dplyr::join_by(fishing_zone_id))
+                     by = dplyr::join_by(fishing_zone_id)) %>% 
+    dplyr::left_join(sp,
+                     by = dplyr::join_by(species_id))
   d <- 
     d |> 
     # anything to do with gear first - guess could be thought of as "synis_id"
@@ -87,6 +92,9 @@ fm_catch <- function(key, std = TRUE, trim = TRUE, remove_empty = TRUE) {
                   lon,
                   lat,
                   measurement_type,
+                  species,
+                  weight,
+                  price,
                   survey_item_id,
                   survey_item_dtl_id,
                   created_by,

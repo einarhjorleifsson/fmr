@@ -10,7 +10,7 @@ fm_vesselF <- function(key) {
     janitor::clean_names() |> 
     dplyr::mutate(registration_date = lubridate::ymd_hms(registration_date),
                   registration_date = lubridate::as_date(registration_date)) |> 
-    dplyr::distinct()
+    dplyr::distinct(vessel_id, .keep_all = TRUE)
 }
 
 #' Vessel table (vesselD)
