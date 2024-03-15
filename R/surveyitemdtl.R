@@ -58,6 +58,9 @@ fm_catch <- function(key, std = TRUE, trim = TRUE, remove_empty = TRUE) {
   sp <- 
     fm_species(key)
   
+  gear <- 
+    fm_gear(key)
+  
   ch <- 
     fm_choice(key) |> 
     dplyr::filter(table == "survey_item_dtl")
@@ -78,6 +81,8 @@ fm_catch <- function(key, std = TRUE, trim = TRUE, remove_empty = TRUE) {
                 dplyr::select(measurement_type_id = choice_id,
                               measurement_type = code),
                 by = dplyr::join_by(measurement_type_id)) |> 
+    dplyr::left_join(gear,
+                     by = dplyr::join_by(gear_id)) |> 
     dplyr::left_join(fz,
                      by = dplyr::join_by(fishing_zone_id)) |> 
     dplyr::left_join(sp,
@@ -85,7 +90,7 @@ fm_catch <- function(key, std = TRUE, trim = TRUE, remove_empty = TRUE) {
   d <- 
     d |> 
     # anything to do with gear first - guess could be thought of as "synis_id"
-    dplyr::select(gear_id, gear_size, no_of_sets, soak_time,
+    dplyr::select(gear, gear_size, no_of_sets, soak_time,
                   depth_min, depth_max, 
                   no_of_gears,
                   fz,
@@ -109,10 +114,10 @@ fm_catch <- function(key, std = TRUE, trim = TRUE, remove_empty = TRUE) {
       d |> 
       dplyr::rename(dplyr::any_of(vocabulary))
     
-    if(FALSE) {
+    if(trim) {
       d <-
         d |> 
-        dplyr::select(gear_id:survey_item_dtl_id)
+        dplyr::select(gear:.s3)
     }
   }
   
