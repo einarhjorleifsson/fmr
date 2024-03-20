@@ -97,6 +97,7 @@ fm_catch <- function(key, std = TRUE, trim = TRUE, remove_empty = TRUE) {
                   lon,
                   lat,
                   measurement_type,
+                  species_id,
                   species,
                   weight,
                   price,
