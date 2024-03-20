@@ -6,6 +6,7 @@
 #' @param trim boolean (default TRUE), if only "essential" variables
 #'
 #' @return a tibble
+#' @export
 fm_species <- function(key, std = TRUE, trim = TRUE) {
   d <- 
     fm_tbl(table = "specieD", key) |> 
