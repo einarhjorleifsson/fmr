@@ -13,7 +13,8 @@ fm_species <- function(key, std = TRUE, trim = TRUE) {
     janitor::clean_names() |> 
     dplyr::mutate(species = dplyr::case_when(is.na(friendly_name)  & !is.na(english_name) ~ english_name,
                                              is.na(friendly_name)  &  is.na(english_name) ~ scientific_name,
-                                             .default = friendly_name))
+                                             .default = friendly_name),
+                  species = stringr::str_trim(species))
   if(trim) {
     d <-
       d |> 
