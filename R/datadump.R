@@ -7,14 +7,14 @@
 #' @return NULL
 #' @export
 #'
-fm_dump <- function(table, key, dump_pth) {
+fm_dump <- function(table, key, pth) {
   
   if(!dir.exists(dump_pth)) {
-    stop(paste0("Dump path: ", dump_pth, " does not exist")) 
+    stop(paste0("Dump path: ", pth, " does not exist")) 
   }
   
   fm_tbl(table = table, key, clean = FALSE) |> 
-    readr::write_rds(paste0(dump_pth, "/", table, ".rds"))
+    readr::write_rds(paste0(pth, "/", table, ".rds"))
 }
 
 
@@ -40,6 +40,6 @@ fm_datadump <- function(key, pth = "dump") {
               "survey", "surveyItem", "surveyItemDtl")
   
   
-  purrr::map(tables, fm_dump, key, dump_pth)
+  purrr::map(tables, fm_dump, key, pth)
   
 }

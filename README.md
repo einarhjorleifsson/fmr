@@ -29,8 +29,6 @@ library(tidyverse)
 key <- "your_FM_API_key"
 ```
 
-    #> [1] "4b4dfa960222d91308f4b2707d52610a"
-
 ``` r
 fm_survey(key) |> glimpse()
 ```

@@ -23,8 +23,8 @@ This document is just to explore the FM data model, done to prevent any misunder
 The FM API on is made up from three tables ([The Data Structured Explained](https://fimsehf.atlassian.net/wiki/x/zgC7ww)).
 
 1. Survey table - distinguished by survey_id
-2. Survey detail table - distinguished by survey_item_id
-3. Survey item table - distinguished by survey_item_dtl_id
+2. Trip table - distinguished by trip_id (survey_item_id)
+3. Catch table - distinguished by .id (survey_item_dtl_id)
 
 The conceptual design (if one is considering catch-sampling on landing sites) is depicted as:
 

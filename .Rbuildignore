@@ -10,3 +10,4 @@ README.Rmd
 ^garbage$
 fmr.Rproj
 ^data-raw$
+vignettes_older
