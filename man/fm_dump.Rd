@@ -4,7 +4,7 @@
 \alias{fm_dump}
 \title{Dump a FM table as rds}
 \usage{
-fm_dump(table, key, dump_pth)
+fm_dump(table, key, pth)
 }
 \arguments{
 \item{table}{FM table name}

@@ -8,7 +8,7 @@ Description: Establish R-connection to Fisheries Technology (FT) Oracle database
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.1
+RoxygenNote: 7.3.2
 Suggests: 
     rmarkdown (>= 2.14),
     ROracle,

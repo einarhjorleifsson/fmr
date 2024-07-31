@@ -12,6 +12,8 @@
 #'
 fm_site <- function(key, std = TRUE, trim = TRUE) {
   
+  party <-
+    fm_partyV(key)
   d <- 
     fm_tbl(table = "siteD", key) |> 
     dplyr::select(site, longitude, latitude, dplyr::everything())

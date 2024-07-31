@@ -1,5 +1,5 @@
 test_that("rows of survey components should be the same as landingF", {
-  key <- "4b4dfa960222d91308f4b2707d52610a"
+  key <- Sys.getenv("fm_key")
   s <- fm_sF(key)
   si <- fm_siF(key)
   sid <- fm_sidF(key)

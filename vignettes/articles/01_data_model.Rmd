@@ -16,9 +16,20 @@ library(fmr)
 library(tidyverse)
 ```
 
+## The connection
+
+
+```{r, eval = FALSE}
+key <- "your_FM_API_key"
+```
+
+```{r, echo = FALSE}
+key <- Sys.getenv("fm_key")
+```
+
 ## Preamble
 
-This document is just to explore the FM data model, done to prevent any misunderstanding when setting up the downstream code. In addition it deals with some issues and questions that arise related to the data-entry of catch-sample data.
+This document is just to explore the FM data model, done to prevent any misunderstanding when setting up the downstream code.
 
 The FM API on is made up from three tables ([The Data Structured Explained](https://fimsehf.atlassian.net/wiki/x/zgC7ww)).
 
@@ -35,21 +46,24 @@ knitr::include_graphics(here::here("vignettes/articles/data_model1.png"))
 
 The FM 3 table framework is not specific for sampling from landings, but lets here think about these three tables in that context.
 
-1. Sampling site table (survey table): For catch-sampling from landings data one could imagine that each record represents information about the sampling from a particular sampling site on a particular sampling date (this though not the necessary case as discussed below).
+1. Sampling site table (survey table): For catch-sampling from landings data one could imagine that each record represents information about the sampling from a particular sampling site on a particular sampling date.
 2. Trip table (surveyitem table): In case of catch sampling from landings this table should contain all information related to a single fishing trip except details of catch.
-3. Catch table (surveyitem detail table): In case of catch sampling from landings this table will contain the detailed information about catch by species.
+3. Catch table (surveyitem detail table): In case of catch sampling from landings this table will contain the detailed information about catch by species for each gear used.
 
-## The connection
+## Function logic
+
+The {fmr}-package provides a set of functions that are just convenient wrappers for the API
 
 
 
-```{r, eval = FALSE}
-key <- "your_FM_API_key"
+
+
+```{r}
+
 ```
 
-```{r, echo = FALSE}
-key <- Sys.getenv("fm_key")
-```
+
+
 
 ## The three survey tables
 
@@ -57,8 +71,8 @@ Let's start by loading in tables needed, if only because we need information fro
 
 ```{r}
 survey <- fm_survey(key, trim = FALSE)
-trip <- fm_trip(key)
-catch <- fm_catch(key)
+trip   <- fm_trip(key, trim = FALSE)
+catch  <- fm_catch(key, trim = FALSE)
 ```
 
 
@@ -91,6 +105,8 @@ d |>
 Visually we have:
 
 ```{r}
+#| fig.alt: >
+#|   This is some dummy
 d |> 
   mutate(survey = TRUE) |> 
   fm_grid_calendar() |> 
@@ -192,6 +208,8 @@ survey |>
 One would use this table e.g. to get an overview of the reported sampled dates:
 
 ```{r, fig.width = 9, fig.height = 9}
+#| fig.alt: >
+#|   This is some dummy
 fm_survey(key, trim = FALSE) %>% 
   filter(year(date) == 2024,
          month(date) == 1) |> 

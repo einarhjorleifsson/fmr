@@ -26,12 +26,13 @@ The goal of {fmr} is to:
 * Provide markdown report templates for various standardized reports
 * R-code examples for data analysis and graphical presentations
 
-## Quick start
+## Installing
 
 ```{r, eval = FALSE}
 remotes::install_github("einarhjorleifsson/fmr")
 ```
 
+## Connection
 
 ```{r}
 library(fmr)
@@ -43,8 +44,53 @@ key <- "your_FM_API_key"
 key <- Sys.getenv("fm_key")
 ```
 
-```{r, eval = FALSE}
-fm_survey(key) |> glimpse()
+## The FM API
+
+The current API does not provide direct access to the database used by FM (Oracle) but to an API that provides the data in a JSON format. An example of such an interface (here for the gear table) is:
+
+
+### Primary tables
+
+Currently there are three primary datatables within the FM-system:
+
+* ...
+
+### Auxillary tables
+
+* ...
+
+
+## The {fmr} philosophy
+
+The {fmr}-package provides a convenient wrapper to the FM-API so that data can be imported directly into R. The lowest level function is `fm_tbl`-function. One can e.g. obtain an exact copy of the what can be obtained from the JSON API "surveyItem" (read: The trip table) by using the following arguments:
+
+```{r}
+fm_tbl(table = "surveyItem", key = key, clean = FALSE) |> glimpse()
 ```
+
+This table has actually a lot of variables, starting off with a lot of numerical "Id"s that an average data analyst may be unfamiliar with. ...
+
+There are also two addtional notes to make with respect to these "raw" data:
+
+* Variable names are in "camel-toe" format meaning some letters are capital format
+* Some of the variable types are not as expected. Examples are all the datetime variables (depTime, arrTime, createdDate, lastModifiedDate) are set as characters. And then we have a lot of variables that are of type logigcal (<lgl>)
+
+The reason for the latter is that the API JSON format does not provide type specification of each variable and R imports variables based on the "lowest denominator".
+
+
+
+
+Most of the function only need the user to supply the FM-API **key*, it being strategically put as the first argument. So e.g. to access the trip table one only needs the following:
+
+```{r}
+fm_trip(key, std = FALSE) |> glimpse()
+```
+
+
+
+```{r}
+fm_tbl(table = "vesselD", key) |> glimpse()
+```
+
 
 

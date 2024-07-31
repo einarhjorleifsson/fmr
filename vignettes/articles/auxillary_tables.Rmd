@@ -12,6 +12,7 @@ knitr::opts_chunk$set(
 ```
 
 ```{r}
+
 library(fmr)
 library(tidyverse)
 key <- "your_FM_API_key"

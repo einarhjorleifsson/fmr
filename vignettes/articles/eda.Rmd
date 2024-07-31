@@ -60,8 +60,8 @@ Let's start by loading in tables needed, if only because we need information fro
 
 ```{r}
 survey <- fm_survey(key)
-trip <- fm_surveyitem(key)
-catch <- fm_surveyitemdtl(key)
+trip <- fm_trip(key)
+catch <- fm_catch(key)
 ```
 
 
@@ -94,6 +94,8 @@ d |>
 Visually we have:
 
 ```{r}
+#| fig.alt: >
+#|   This is some dummy
 d |> 
   mutate(survey = TRUE) |> 
   fm_grid_calendar() |> 
@@ -224,6 +226,8 @@ s1 |>
 One would use this table e.g. to get an overview of the reported sampled dates:
 
 ```{r, fig.width = 9, fig.height = 9}
+#| fig.alt: >
+#|   This is some dummy
 fm_survey(key, trim = FALSE) %>% 
   filter(year(date) == 2024,
          month(date) == 1) |> 

@@ -24,8 +24,8 @@ fm_survey(key, std = TRUE, trim = TRUE, remove_empty = TRUE)
 \item{std}{boolean, if TRUE (default) variables are renamed according to
 {fmr} convention}
 
-\item{trim}{boolean, if TRUE (defaul) only essential (standard) variables
-are returned. Only active if arguement std is set to TRUE.}
+\item{trim}{boolean, if TRUE (default) only essential (standard) variables
+are returned. Only active if argument std is set to TRUE.}
 
 \item{remove_empty}{boolean, if TRUE (default) remove variables whose values
 are all NA's}

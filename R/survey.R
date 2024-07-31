@@ -3,8 +3,7 @@
 # 2024-02-06 For the time being there is no filter on the survey_type_id, because
 #            there is only one (1817 - Landing)
 #            In the future, once multiple survey types have been entered in the
-#            database one could forsee having to create convenient wrapper
-#            functions. Need to start thinking about naming conventions.
+#            database one could foresee having to modifiy the current wrappers
 
 #' The survey table
 #'
@@ -38,8 +37,8 @@ fm_survey_api <- function(key) {
 #' @param key your FM API key
 #' @param std boolean, if TRUE (default) variables are renamed according to 
 #' {fmr} convention
-#' @param trim boolean, if TRUE (defaul) only essential (standard) variables
-#' are returned. Only active if arguement std is set to TRUE.
+#' @param trim boolean, if TRUE (default) only essential (standard) variables
+#' are returned. Only active if argument std is set to TRUE.
 #' @param remove_empty boolean, if TRUE (default) remove variables whose values 
 #' are all NA's
 #' 
